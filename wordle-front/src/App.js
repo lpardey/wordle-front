@@ -1,8 +1,8 @@
-import LoginForm from "./LoginForm"
+import LogIn from "./LogIn";
 
 function App() {
   return (
-    <LoginForm />
+    <LogIn />
   );
 }
 
