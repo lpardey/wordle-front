@@ -10,7 +10,7 @@ import Link from "@mui/material/Link";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-function LoginHook({ showPassword, handleClickLogIn, handleClickShowPassword, handleMouseDownPassword, btnStyle }) {
+function Login({ showPassword, handleClickShowPassword, handleClickRegister, handleMouseDownPassword, btnStyle }) {
     return (
         <>
             <Typography variant="h5" component={"h2"}>Log In</Typography>
@@ -31,7 +31,7 @@ function LoginHook({ showPassword, handleClickLogIn, handleClickShowPassword, ha
                                 onMouseDown={handleMouseDownPassword}
                                 edge="end"
                             >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                         </InputAdornment>
                     }
@@ -39,8 +39,8 @@ function LoginHook({ showPassword, handleClickLogIn, handleClickShowPassword, ha
                 />
             </FormControl>
             <Button type="submit" color="primary" variant="contained" style={btnStyle} fullWidth>Log In</Button>
-            <Typography variant="subtitle1" >No account? <Link href="#" onClick={handleClickLogIn}>Register!</Link></Typography>
+            <Typography variant="subtitle1" >No account? <Link href="#" onClick={handleClickRegister}>Register!</Link></Typography>
         </>
     )
 }
-export default LoginHook
+export default Login

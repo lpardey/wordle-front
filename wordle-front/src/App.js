@@ -1,9 +1,10 @@
-import LogIn from "./LogIn";
+import SignIn from "./SignIn";
 
 function App() {
   return (
-    <LogIn />
+    <SignIn />
   );
 }
 
 export default App;
+

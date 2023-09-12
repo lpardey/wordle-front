@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-function RegisterHook({ showPassword, handleClickLogIn, handleClickShowPassword, handleMouseDownPassword, btnStyle }) {
+function Register({ showPassword, handleClickShowPassword, handleClickRegister, handleMouseDownPassword, btnStyle }) {
     return (
         <>
             <Typography variant="h5" component={"h2"}>Register</Typography>
@@ -30,7 +30,7 @@ function RegisterHook({ showPassword, handleClickLogIn, handleClickShowPassword,
                                 onMouseDown={handleMouseDownPassword}
                                 edge="end"
                             >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                         </InputAdornment>
                     }
@@ -42,8 +42,8 @@ function RegisterHook({ showPassword, handleClickLogIn, handleClickShowPassword,
                 <OutlinedInput id="outlined-adornment-username" label="Email" />
             </FormControl>
             <Button type="submit" color="primary" variant="contained" style={btnStyle} fullWidth>Register</Button>
-            <Typography variant="subtitle1">Do you have an account? <Link href="#" onClick={handleClickLogIn} >Log In!</Link></Typography>
+            <Typography variant="subtitle1">Do you have an account? <Link href="#" onClick={handleClickRegister} >Log In!</Link></Typography>
         </>
     )
 }
-export default RegisterHook
+export default Register
