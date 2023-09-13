@@ -12,12 +12,16 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 function Register({ showPassword, handleClickShowPassword, handleClickRegister, handleMouseDownPassword, btnStyle }) {
     return (
         <>
-            <Typography variant="h5" component={"h2"}>Register</Typography>
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" required>
+            <Typography sx={{ m: 1 }} variant="h5" component={"h2"}>Register</Typography>
+            <FormControl sx={{ m: 1, width: '25ch', backgroundColor: "white" }} variant="outlined" color="secondary" required>
                 <InputLabel htmlFor="outlined-adornment-password">Username</InputLabel>
                 <OutlinedInput id="outlined-adornment-username" label="Username" />
             </FormControl>
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" required>
+            <FormControl sx={{ m: 1, width: '25ch', backgroundColor: "white" }} variant="outlined" color="secondary" required>
+                <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
+                <OutlinedInput id="outlined-adornment-username" label="Email" />
+            </FormControl>
+            <FormControl sx={{ m: 1, width: '25ch', backgroundColor: "white" }} variant="outlined" color="secondary" required>
                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-password"
@@ -37,12 +41,8 @@ function Register({ showPassword, handleClickShowPassword, handleClickRegister, 
                     label="Password"
                 />
             </FormControl>
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" required>
-                <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
-                <OutlinedInput id="outlined-adornment-username" label="Email" />
-            </FormControl>
-            <Button type="submit" color="primary" variant="contained" style={btnStyle} fullWidth>Register</Button>
-            <Typography variant="subtitle1">Do you have an account? <Link href="#" onClick={handleClickRegister} >Log In!</Link></Typography>
+            <Button type="submit" variant="contained" style={btnStyle}>Submit</Button>
+            <Typography variant="subtitle1">Do you have an account? <Link color={"#8B38F7"} href="#" onClick={handleClickRegister} >Log In!</Link></Typography>
         </>
     )
 }
