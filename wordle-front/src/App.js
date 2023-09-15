@@ -5,7 +5,7 @@ function App() {
   const titleStyle = { display: "flex", justifyContent: "center", margin: "auto", marginTop: 50, color: "#8B38F7", fontWeight: "bold" }
   return (
     <>
-      <Typography style={titleStyle} component={"h1"} variant="h3">WORDLEMATIC</Typography>
+      <Typography component={"h1"} variant="h3" style={titleStyle}>WORDLEMATIC</Typography>
       <SignIn />
     </>
   );
