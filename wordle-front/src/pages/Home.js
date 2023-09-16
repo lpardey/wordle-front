@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import LockIcon from "@mui/icons-material/Lock";
-import Credentials from "./Credentials";
+import Authentication from "../Authentication";
 
-function SignIn() {
+export default function Home() {
     // // TODO clear the inputfields aswell onclick login onclick register
     return (
         <Box
@@ -23,8 +23,7 @@ function SignIn() {
             <Avatar sx={{ backgroundColor: "purple", width: 60, height: 60 }}>
                 <LockIcon />
             </Avatar>
-            <Credentials />
+            <Authentication />
         </Box>
     )
 }
-export default SignIn
