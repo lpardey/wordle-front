@@ -1,15 +1,18 @@
-import SignIn from "./SignIn";
-import Typography from "@mui/material/Typography";
+import SharedLayout from "./pages/SharedLayout";
+import Home from "./pages/Home";
+import Game from "./pages/Game";
+import NotFound from "./pages/NotFound";
+import { Routes, Route } from "react-router-dom";
 
-function App() {
-  const titleStyle = { display: "flex", justifyContent: "center", margin: "auto", marginTop: 50, color: "#8B38F7", fontWeight: "bold" }
+export default function App() {
   return (
-    <>
-      <Typography component={"h1"} variant="h3" style={titleStyle}>WORDLEMATIC</Typography>
-      <SignIn />
-    </>
+    <Routes>
+      <Route path="/" element={<SharedLayout />}>
+        <Route index element={<Home />} />
+        <Route path="/game" element={<Game />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   );
 }
-
-export default App;
 
