@@ -13,10 +13,11 @@ export default function Game() {
     // letters_status -> 0 in place, 1 present, 2 not present
     const [gameId, setGameId] = useState(0)
     const [gameWord, setGameWord] = useState("CYDER")
-    const [guesses, setGuesses] = useState([{ word: "CLOUD", letters_status: [0, 2, 2, 2, 1] }])
+    const [guesses, setGuesses] = useState([{ word: "CLOUD", letters_status: [0, 2, 2, 2, 1] }, { word: "PIZZA", letters_status: [2, 2, 2, 2, 2] }])
     const [attempts, setAttempts] = useState(5)
     const [gameStatus, setGameStatus] = useState("WAITING_FOR_GUESS")
     const [guess, setGuess] = useState("")
+    const [maxAttempts, setMaxAttempts] = useState(6)
     const getBackgroundColor = (number) => {
         return number === 0 ? "#D76161" : number === 1 ? "#61D78C" : "#797979"
     }
@@ -41,6 +42,49 @@ export default function Game() {
             setGuess("")
         }).catch(error => console.error(`Error ${error}`));
     }
+    const showGameBoard = (guesses, maxAttempts) => {
+        for (let guessIndex = 0; guessIndex < maxAttempts; guessIndex++) {
+            const word = guesses[guessIndex].word
+            word ?
+                (
+                    Array(word).forEach(element => {
+                        <Box
+                            display={"flex"}
+                            border={1}
+                            boxSizing={"content-box"}
+                            width={60}
+                            height={50}
+                            textAlign={"center"}
+                            alignItems="center"
+                            justifyContent={"center"}
+                            fontSize={50}
+                            color={"white"}
+                            sx={{ backgroundColor: getBackgroundColor(guesses[guessIndex].letters_status[word.indexOf(element)]) }}
+                        >
+                            {element}
+                        </Box>
+                    })
+                ) : (
+                    Array(5).forEach(element => {
+                        <Box
+                            display={"flex"}
+                            border={1}
+                            boxSizing={"content-box"}
+                            width={60}
+                            height={50}
+                            textAlign={"center"}
+                            alignItems="center"
+                            justifyContent={"center"}
+                            fontSize={50}
+                            color={"white"}
+                            sx={{ backgroundColor: getBackgroundColor(2) }}
+                        >
+                        </Box>
+                    })
+                )
+        }
+    }
+
     return (
         <>
             <Box
@@ -59,9 +103,25 @@ export default function Game() {
 
                 <h3>Game Word: {gameWord}</h3>
 
-                <h3>Guess: {Array(guesses[0].word)}</h3>
+                <h3>Guess: {guesses[0].word}</h3>
+                <h3>Esto es {guesses[0].word.length}</h3>
 
                 <Stack direction={"row"}>
+                    {/* {showGameBoard(guesses, maxAttempts)} */}
+                    <Box
+                        display={"flex"}
+                        border={1}
+                        boxSizing={"content-box"}
+                        width={60}
+                        height={50}
+                        textAlign={"center"}
+                        alignItems="center"
+                        justifyContent={"center"}
+                        fontSize={50}
+                        color={"white"}
+                        sx={{ backgroundColor: getBackgroundColor(2) }}
+                    >
+                    </Box>
                     <Box
                         display={"flex"}
                         border={1}
