@@ -1,17 +1,13 @@
 import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import useToggle from "./hooks/useToggle";
 import useForm from "./hooks/useForm";
 import { useEffect } from "react";
 import axios from "axios"
+import Input from "./components/Input";
+import PasswordIcon from "./components/PasswordIcon";
+
 
 
 export default function Authentication() {
@@ -53,50 +49,44 @@ export default function Authentication() {
     return (
         <>
             <Typography component={"h2"} variant="h5" sx={{ marginTop: 1, marginBottom: 1, }}>
-                {isLoginPage ? 'Log In' : 'Register'}
+                {isLoginPage ? "Log In" : "Register"}
             </Typography>
             <form onSubmit={handleSubmit}>
-                <FormControl margin="normal" variant="outlined" color="secondary" required fullWidth sx={{ marginTop: 1, marginBottom: 1, backgroundColor: "white" }}>
-                    <InputLabel htmlFor="outlined-adornment-username" >Username</InputLabel>
-                    <OutlinedInput id="outlined-adornment-username" name="username" value={inputs.username} onChange={handleChange} label="Username" />
-                </FormControl>
+                <Input
+                    label={"Username"}
+                    value={inputs.username}
+                    handleChange={handleChange}
+                    type={"text"}
+                />
                 {!isLoginPage &&
-                    <FormControl margin="normal" variant="outlined" color="secondary" required fullWidth sx={{ marginTop: 1, marginBottom: 1, backgroundColor: "white" }}>
-                        <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
-                        <OutlinedInput id="outlined-adornment-email" name="email" value={inputs.email} onChange={handleChange} type="email" label="Email" />
-                    </FormControl>
+                    <Input label={"Email"} value={inputs.email} handleChange={handleChange} type={"email"} />
                 }
-                <FormControl margin="normal" variant="outlined" color="secondary" required fullWidth sx={{ marginTop: 1, marginBottom: 1, backgroundColor: "white" }}>
-                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                    <OutlinedInput
-                        id="outlined-adornment-password"
-                        name="password"
-                        value={inputs.password}
-                        onChange={handleChange}
-                        type={showPassword ? 'text' : 'password'}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={togglePassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                        label="Password"
-                    />
-                </FormControl>
-                <Button type="submit" variant="contained" fullWidth sx={{ marginTop: 1, marginBottom: 1, backgroundColor: "#8B38F7", "&:hover": { backgroundColor: "#700af5" } }} >
+                <Input
+                    label={"Password"}
+                    value={inputs.password}
+                    handleChange={handleChange}
+                    type={showPassword ? "text" : "password"}
+                    icon={
+                        <PasswordIcon
+                            showPassword={showPassword}
+                            handleClick={togglePassword}
+                            handleMouseDown={handleMouseDownPassword}
+                        />
+                    }
+                />
+                <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    sx={{ marginTop: 1, marginBottom: 1, backgroundColor: "#8B38F7", "&:hover": { backgroundColor: "#700af5" } }}
+                >
                     Submit
                 </Button>
             </form>
             <Typography component={"p"} variant="subtitle1" sx={{ marginTop: 1, marginBottom: 1, }} >
-                {isLoginPage ? 'No account? ' : 'Do you have an account? '}
+                {isLoginPage ? "No account? " : "Do you have an account? "}
                 <Link color={"#8B38F7"} href="#" onClick={handleLink}>
-                    {isLoginPage ? 'Register!' : 'Log In!'}
+                    {isLoginPage ? "Register!" : "Log In!"}
                 </Link>
             </Typography>
         </>
