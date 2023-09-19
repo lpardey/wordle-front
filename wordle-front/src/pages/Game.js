@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import axios from "axios"
 import { useEffect, useState } from "react"
+import GameBoard from "../components/GameBoard"
 
 
 export default function Game() {
@@ -37,52 +38,10 @@ export default function Game() {
     const handleSubmit = (e) => { e.preventDefault(); postGuess() }
 
     const postGuess = () => {
-        const url = "`http://wordle_back:8000//${player_id}/${game_id}/guess`"
+        const url = "`http://wordle_back:8000/${player_id}/${game_id}/guess`"
         axios.post(url, guess).then((response) => {
             setGuess("")
         }).catch(error => console.error(`Error ${error}`));
-    }
-    const showGameBoard = (guesses, maxAttempts) => {
-        for (let guessIndex = 0; guessIndex < maxAttempts; guessIndex++) {
-            const word = guesses[guessIndex].word
-            word ?
-                (
-                    Array(word).forEach(element => {
-                        <Box
-                            display={"flex"}
-                            border={1}
-                            boxSizing={"content-box"}
-                            width={60}
-                            height={50}
-                            textAlign={"center"}
-                            alignItems="center"
-                            justifyContent={"center"}
-                            fontSize={50}
-                            color={"white"}
-                            sx={{ backgroundColor: getBackgroundColor(guesses[guessIndex].letters_status[word.indexOf(element)]) }}
-                        >
-                            {element}
-                        </Box>
-                    })
-                ) : (
-                    Array(5).forEach(element => {
-                        <Box
-                            display={"flex"}
-                            border={1}
-                            boxSizing={"content-box"}
-                            width={60}
-                            height={50}
-                            textAlign={"center"}
-                            alignItems="center"
-                            justifyContent={"center"}
-                            fontSize={50}
-                            color={"white"}
-                            sx={{ backgroundColor: getBackgroundColor(2) }}
-                        >
-                        </Box>
-                    })
-                )
-        }
     }
 
     return (
@@ -107,8 +66,28 @@ export default function Game() {
                 <h3>Esto es {guesses[0].word.length}</h3>
 
                 <Stack direction={"row"}>
-                    {/* {showGameBoard(guesses, maxAttempts)} */}
-                    <Box
+                    {console.log(guesses[0] ? guesses[0].word : 5)}
+                    {guesses[0].word.split("").map((letter, letterIndex) => (
+                        <Box
+                            display={"flex"}
+                            border={1}
+                            boxSizing={"content-box"}
+                            width={60}
+                            height={50}
+                            textAlign={"center"}
+                            alignItems="center"
+                            justifyContent={"center"}
+                            fontSize={50}
+                            color={"white"}
+                            sx={{ backgroundColor: getBackgroundColor(guesses[0].letters_status[letterIndex]) }}
+                        >
+                            {letter}
+                        </Box>
+                    ))}
+                    {console.log(guesses[0].word.split(""))}
+                    {/* {GameBoard(guesses, maxAttempts)} */}
+                    {/* {GameBoard(guesses, maxAttempts)} */}
+                    {/* <Box
                         display={"flex"}
                         border={1}
                         boxSizing={"content-box"}
@@ -166,7 +145,7 @@ export default function Game() {
                         sx={{ backgroundColor: getBackgroundColor(guesses[0].letters_status[4]) }}
                     >
                         {guesses[0].word.charAt(4)}
-                    </Box>
+                    </Box> */}
                 </Stack>
                 <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <TextField id="standard-basic" variant="standard" value={guess} onChange={handleChange} required inputProps={{ style: { textAlign: "center", textTransform: "uppercase" } }} sx={{ width: 150, marginTop: 3 }} />

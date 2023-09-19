@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import LockIcon from "@mui/icons-material/Lock";
-import Authentication from "../Authentication";
+import Authentication from "../components/Authentication";
 
 export default function Home() {
     return (

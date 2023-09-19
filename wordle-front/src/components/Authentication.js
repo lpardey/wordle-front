@@ -1,14 +1,12 @@
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
-import useToggle from "./hooks/useToggle";
-import useForm from "./hooks/useForm";
+import useToggle from "../hooks/useToggle";
+import useForm from "../hooks/useForm";
 import { useEffect } from "react";
 import axios from "axios"
-import Input from "./components/Input";
-import PasswordIcon from "./components/PasswordIcon";
-
-
+import Input from "./Input";
+import PasswordIcon from "./PasswordIcon";
 
 export default function Authentication() {
     const [isLoginPage, toggleLogin] = useToggle(true);
@@ -59,19 +57,23 @@ export default function Authentication() {
                     type={"text"}
                 />
                 {!isLoginPage &&
-                    <Input label={"Email"} value={inputs.email} handleChange={handleChange} type={"email"} />
+                    <Input
+                        label={"Email"}
+                        value={inputs.email}
+                        handleChange={handleChange}
+                        type={"email"}
+                    />
                 }
                 <Input
                     label={"Password"}
                     value={inputs.password}
                     handleChange={handleChange}
                     type={showPassword ? "text" : "password"}
-                    icon={
-                        <PasswordIcon
-                            showPassword={showPassword}
-                            handleClick={togglePassword}
-                            handleMouseDown={handleMouseDownPassword}
-                        />
+                    icon={<PasswordIcon
+                        showPassword={showPassword}
+                        handleClick={togglePassword}
+                        handleMouseDown={handleMouseDownPassword}
+                    />
                     }
                 />
                 <Button
