@@ -4,7 +4,6 @@ import LockIcon from "@mui/icons-material/Lock";
 import Authentication from "../Authentication";
 
 export default function Home() {
-    // // TODO clear the inputfields aswell onclick login onclick register
     return (
         <Box
             display={"flex"}
