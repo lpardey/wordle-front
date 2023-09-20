@@ -1,9 +1,7 @@
 import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import LockIcon from "@mui/icons-material/Lock";
-import Authentication from "../components/Authentication";
+import UserRegistration from "../components/UserRegistration";
 
-export default function Home() {
+export default function Registration() {
     return (
         <Box
             display={"flex"}
@@ -19,10 +17,7 @@ export default function Home() {
             backgroundColor="#FAF9FA"
             sx={{ ":hover": { boxShadow: "15px 15px 25px #ccc" } }}
         >
-            <Avatar sx={{ backgroundColor: "purple", width: 60, height: 60 }}>
-                <LockIcon />
-            </Avatar>
-            <Authentication />
+            <UserRegistration />
         </Box>
     )
 }
