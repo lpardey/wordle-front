@@ -1,27 +1,34 @@
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack"
 
-export default function GameBoard({ guesses, maxAttempts }) {
-    for (let guessIndex = 0; guessIndex < maxAttempts; guessIndex++) {
-        guesses[guessIndex].word.split("").map((letter, letterIndex) => (
-            <Box
-                display={"flex"}
-                border={1}
-                boxSizing={"content-box"}
-                width={60}
-                height={50}
-                textAlign={"center"}
-                alignItems="center"
-                justifyContent={"center"}
-                fontSize={50}
-                color={"white"}
-                sx={{ backgroundColor: getBackgroundColor(guesses[guessIndex].letters_status[letterIndex]) }}
-            >
-                {letter}
-            </Box>
-        ))
-    }
+function GameBoard({ guesses }) {
+    setWord(guesses, 0)
+
 }
 
+function setWord(guesses, guessIndex) {
+    return (
+        <Stack direction={"row"}>
+            {guesses[guessIndex].word.split("").map((letter, letterIndex) => (
+                <Box
+                    display={"flex"}
+                    border={1}
+                    boxSizing={"content-box"}
+                    width={60}
+                    height={50}
+                    textAlign={"center"}
+                    alignItems="center"
+                    justifyContent={"center"}
+                    fontSize={50}
+                    color={"white"}
+                    sx={{ backgroundColor: getBackgroundColor(guesses[guessIndex].letters_status[letterIndex]) }}
+                >
+                    {letter}
+                </Box>
+            ))}
+        </Stack>
+    )
+}
 
 const getBackgroundColor = (number) => {
     return number === 0 ? "#D76161" : number === 1 ? "#61D78C" : "#797979"
@@ -110,3 +117,5 @@ const showGameBoard = (guesses, maxAttempts) => {
 //         {letter}
 //     </Box>
 // )))}
+
+export { setWord, GameBoard }

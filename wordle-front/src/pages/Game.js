@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import GameBoard from "../components/GameBoard"
+import { GameBoard, setWord } from "../components/GameBoard"
 
 
 export default function Game() {
@@ -38,7 +38,7 @@ export default function Game() {
     const handleSubmit = (e) => { e.preventDefault(); postGuess() }
 
     const postGuess = () => {
-        const url = "`http://wordle_back:8000/${player_id}/${game_id}/guess`"
+        const url = "`http://localhost:8000/${player_id}/${game_id}/guess`"
         axios.post(url, guess).then((response) => {
             setGuess("")
         }).catch(error => console.error(`Error ${error}`));
@@ -65,9 +65,9 @@ export default function Game() {
                 <h3>Guess: {guesses[0].word}</h3>
                 <h3>Esto es {guesses[0].word.length}</h3>
 
-                <Stack direction={"row"}>
+                <Stack direction={"column"}>
                     {console.log(guesses[0] ? guesses[0].word : 5)}
-                    {guesses[0].word.split("").map((letter, letterIndex) => (
+                    {/* {guesses[0].word.split("").map((letter, letterIndex) => (
                         <Box
                             display={"flex"}
                             border={1}
@@ -83,9 +83,10 @@ export default function Game() {
                         >
                             {letter}
                         </Box>
-                    ))}
+                    ))} */}
                     {console.log(guesses[0].word.split(""))}
-                    {/* {GameBoard(guesses, maxAttempts)} */}
+                    {setWord(guesses, 0)}
+                    {setWord(guesses, 1)}
                     {/* {GameBoard(guesses, maxAttempts)} */}
                     {/* <Box
                         display={"flex"}
