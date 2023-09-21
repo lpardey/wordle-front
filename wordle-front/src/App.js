@@ -10,8 +10,8 @@ export default function App() {
     <Routes>
       <Route path="/" element={<SharedLayout />}>
         <Route index element={<Wordlematic />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Registration" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registration" element={<Registration />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
