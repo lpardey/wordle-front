@@ -1,7 +1,7 @@
 import Input from "./Input"
 import PasswordIcon from "./PasswordIcon"
 
-export default function PasswordInput({ value, handleChange, showPassword, togglePassword, handleMouseDownPassword }) {
+export default function PasswordInput({ value, handleChange, showPassword, togglePassword }) {
     return (
         <Input
             label={"Password"}
@@ -12,7 +12,6 @@ export default function PasswordInput({ value, handleChange, showPassword, toggl
                 <PasswordIcon
                     showPassword={showPassword}
                     handleClick={togglePassword}
-                    handleMouseDown={handleMouseDownPassword}
                 />
             }
         />
