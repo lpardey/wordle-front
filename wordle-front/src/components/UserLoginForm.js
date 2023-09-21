@@ -7,15 +7,12 @@ import FormBottom from "./Form/FormBottom";
 import useToggle from "../hooks/useToggle";
 import useForm from "../hooks/useForm";
 
-import { useEffect } from "react";
 import axios from "axios"
 
-export default function UserLogin() {
+export default function UserLoginForm() {
     const [showPassword, togglePassword] = useToggle(false);
     const [inputs, handleChange, resetInputs] = useForm({ username: "", password: "" })
-    const handleMouseDownPassword = (event) => { event.preventDefault() };
     const handleSubmit = (e) => { e.preventDefault(); postData() }
-
     const postData = () => {
         const url = "http://localhost:8000/account/login"
         const data = { username: inputs.username, password: inputs.password }
@@ -23,25 +20,6 @@ export default function UserLogin() {
             const result = response.data
         }).catch(error => console.error(`Error ${error}`));
     }
-
-    // useEffect(() => {
-    //     async function getLogInResponse() {
-    //         const url = "endpont that receives the data"
-    //         const data = inputs
-    //         const response = axios.get(url, data);
-    //         console.log("hola")
-    //     }
-    //     getLogInResponse();
-    // }, [inputs])
-
-    // useEffect(() => {
-    //     async function PostLogInData() {
-    //         const url = "endpont that receives the data"
-    //         const data = inputs
-    //         const response = axios.post(url, data);
-    //     }
-    //     PostLogInData();
-    // }, [inputs])
 
     return (
         <>
@@ -53,15 +31,13 @@ export default function UserLogin() {
                     handleChange={handleChange}
                     showPassword={showPassword}
                     togglePassword={togglePassword}
-                    handleMouseDownPassword={handleMouseDownPassword}
                 />
                 <FormButton buttonText={"Submit"} />
             </form>
             <FormBottom
                 bottomText={"No account? "}
                 linkText={"Register!"}
-                linkReference={"/Registration"}
-                handleLink={resetInputs}
+                linkReference={"/registration"}
             />
         </>
     )
