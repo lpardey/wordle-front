@@ -11,12 +11,12 @@ export default function Wordle() {
     // letters_status -> 0 in place, 1 present, 2 not present
     const [gameId, setGameId] = useState(0)
     const [gameWord, setGameWord] = useState("CYDER")
-    const [guesses, setGuesses] = useState([{ word: "CLOUD", letters_status: [0, 2, 2, 2, 1] }, { word: "PIZZA", letters_status: [2, 2, 2, 2, 2] }, { word: "CLOUD", letters_status: [0, 2, 2, 2, 1] }, { word: "PIZZA", letters_status: [2, 2, 2, 2, 2] }, { word: "PIZZA", letters_status: [2, 2, 2, 2, 2] }, { word: "CLOUD", letters_status: [0, 2, 2, 2, 1] }])
+    const [guesses, setGuesses] = useState([{ word: "CLOUD", letters_status: [0, 2, 2, 2, 1] }, { word: "PIZZA", letters_status: [2, 2, 2, 2, 2] }, { word: "CLOUD", letters_status: [0, 2, 2, 2, 1] }, { word: "CYDER", letters_status: [0, 0, 0, 0, 0] }, { word: "PIZZA", letters_status: [2, 2, 2, 2, 2] }])
     const [attempts, setAttempts] = useState(5)
     const [gameStatus, setGameStatus] = useState("WAITING_FOR_GUESS")
     const [guess, setGuess] = useState("")
     const [maxAttempts, setMaxAttempts] = useState(6)
-    const getBackgroundColor = (number) => number === 0 ? "#D76161" : number === 1 ? "#61D78C" : "#797979"
+    const getBackgroundColor = (number) => number === 0 ? "#61D78C" : number === 1 ? "#F1F483" : "#797979"
 
     const handleChange = (e) => { setGuess(e.target.value) }
 
