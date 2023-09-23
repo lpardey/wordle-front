@@ -8,22 +8,31 @@ import FormBottom from "./Form/FormBottom";
 import useToggle from "../hooks/useToggle";
 import useForm from "../hooks/useForm";
 import WordleClient from '../clients/wordleClient/wordleClient';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import RegistrationPopUp from './Form/RegistrationPopUp';
 
 export default function UserRegistration() {
     const [showPassword, togglePassword] = useToggle(false);
     const [inputs, handleChange, resetInputs] = useForm({ username: "", email: "", password: "" })
+    const [failMessage, setFailMessage] = useState("")
+    const [openPopUp, togglePopUp] = useToggle(false);
+    const [isSuccess, toggleIsSuccess] = useToggle(false);
     const client = new WordleClient();
+    const navigate = useNavigate()
     const handleSubmit = async (e) => {
         e.preventDefault();
         const response = await client.createUser(inputs.username, inputs.email, inputs.password);
         if (response !== undefined) {
-            alert(`Error: ${response.detail}`);
+            setFailMessage(response.detail)
+            togglePopUp(openPopUp)
+            setTimeout(() => { navigate(0) }, 3000)
         } else {
-            // redirect to "/" with the react router
+            toggleIsSuccess(isSuccess)
+            togglePopUp(openPopUp)
+            setTimeout(() => { navigate("/") }, 3000)
         }
     }
-
     return (
         <>
             <FormTop topText={"Register"} icon={<AppRegistrationIcon />} />
@@ -38,6 +47,18 @@ export default function UserRegistration() {
                 />
                 <FormButton buttonText={"Submit"} />
             </form>
+            {openPopUp ?
+                <RegistrationPopUp
+                    open={openPopUp}
+                    isSuccess={isSuccess}
+                    succesTitle={"Sucess!"}
+                    succesMessage={"Thank you for joining 'Wordlematic'. You're being redirected to the game..."}
+                    failTitle={"Try again..."}
+                    failMessage={`${failMessage}.`}
+                />
+                :
+                null
+            }
             <FormBottom
                 bottomText={"Do you have an account? "}
                 linkText={"Log In!"}
