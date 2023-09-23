@@ -4,10 +4,7 @@ import { CreateUserRequest, CreateUserResponse } from './schemas'
 
 class WordleClient {
   constructor() {
-    this.client = axios.create({
-      baseURL: 'http://localhost:8000',
-      withCredentials: false
-    })
+    this.client = axios.create({ baseURL: 'http://localhost:8000', withCredentials: false })
   }
 
   async createUser(username, email, password) {
