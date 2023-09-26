@@ -1,8 +1,9 @@
 import GameBoard from "./Game/GameBoard";
 import GameInput from "./Game/GameInput";
 import GameButton from "./Game/GameButton";
-import { useState } from "react";
 import axios from "axios"
+import { gameFormStyle } from "../styles/Styles";
+import { useState } from "react";
 
 export default function Wordle() {
     // Get game status info(game word: str, guesses: list[dict[str, list[int]]], game_id) 
@@ -30,10 +31,7 @@ export default function Wordle() {
     return (
         <>
             <GameBoard guesses={guesses} getbgC={getBackgroundColor} />
-            <form
-                onSubmit={handleSubmit}
-                style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-            >
+            <form onSubmit={handleSubmit} style={gameFormStyle}>
                 <GameInput guess={guess} handleChange={handleChange} />
                 <GameButton buttonText={"Guess"} />
             </form>

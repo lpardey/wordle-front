@@ -1,19 +1,9 @@
 import Button from "@mui/material/Button"
+import { gameButtonSX } from "../../styles/Styles"
 
 export default function GameButton({ buttonText }) {
     return (
-        <Button
-            type="submit"
-            variant="contained"
-            size="small"
-            sx={{
-                width: 5,
-                fontSize: 13,
-                marginTop: 2,
-                backgroundColor: "#8B38F7",
-                "&:hover": { backgroundColor: "#700af5" }
-            }}
-        >
+        <Button type="submit" variant="contained" size="small" sx={gameButtonSX}>
             {buttonText}
         </Button>
     )

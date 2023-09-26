@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
 import UserLoginForm from "../components/UserLoginForm";
-import "../styles/box.css";
+import "../styles/Form.css";
 
 export default function Login() {
     return (
-        <Box className="box">
+        <Box className="form">
             <UserLoginForm />
         </Box>
     )

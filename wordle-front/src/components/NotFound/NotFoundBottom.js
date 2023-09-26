@@ -3,16 +3,19 @@ import Typography from "@mui/material/Typography"
 import { Link } from "react-router-dom"
 
 export default function NotFoundBottom({ errorNumber, bottomText, linkText, linkReference }) {
+    const boxSX = { display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }
+    const textSX = { marginTop: "8px", fontWeight: "bold" }
+    const linkStyle = { marginTop: "10px", color: "#8B38F7", fontWeight: "bold" }
     return (
         <>
-            <Box display={"flex"} flexDirection={"column"} alignItems="center" justifyContent={"center"}>
-                <Typography component={"h2"} variant="h4" marginTop={1} fontWeight={"bold"}>
+            <Box sx={boxSX}>
+                <Typography component={"h2"} variant="h4" marginTop={"8px"}>
                     {errorNumber}
                 </Typography>
-                <Typography component={"h2"} variant="h6" marginTop={1} fontWeight={"bold"}>
+                <Typography component={"h2"} variant="h6" sx={textSX}>
                     {bottomText}
                 </Typography>
-                <Link to={linkReference} style={{ marginTop: 10, color: "#8B38F7" }}>
+                <Link to={linkReference} style={linkStyle}>
                     {linkText}
                 </Link>
             </Box>
