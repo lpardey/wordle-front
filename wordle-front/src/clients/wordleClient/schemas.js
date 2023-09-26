@@ -12,4 +12,16 @@ class CreateUserResponse {
     }
 }
 
-export { CreateUserRequest, CreateUserResponse }
+class LoginUserRequest {
+    constructor(username, password) {
+        this.username = username;
+        this.password = password;
+    }
+}
+
+class LoginUserResponse {
+    constructor({ detail }) {
+        this.detail = detail;
+    }
+}
+export { CreateUserRequest, CreateUserResponse, LoginUserRequest, LoginUserResponse }
