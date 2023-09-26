@@ -4,25 +4,22 @@ import SuccessPopUpContent from "../PopUp/SuccessPopUpContent";
 import FailPopUpContent from "../PopUp/FailPopUpContent";
 import "../../styles/box.css"
 
-export default function RegistrationPopUp({ open, isSuccess, succesTitle, succesMessage, failTitle, failMessage }) {
+export default function WindowPopUp({ open, handleClose, isSuccess, succesTitle, succesMessage, failTitle, failMessage }) {
     const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 400,
+        width: isSuccess ? 400 : 330,
         bgcolor: 'background.paper',
         border: '4px solid #8B38F7',
         boxShadow: 24,
         p: 4,
-        justifyContent: "center",
-        alignItems: "center",
-        display:"flex",
-        flexDirection:"column",
     };
     return (
         <Modal
             open={open}
+            onClose={handleClose}
             aria-labelledby="child-modal-title"
             aria-describedby="child-modal-description"
         >
