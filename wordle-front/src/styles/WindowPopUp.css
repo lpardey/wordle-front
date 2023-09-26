@@ -1,0 +1,11 @@
+.popUpBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 365px;
+    background-color: 'background.paper';
+    border: '4px solid #8B38F7';
+    box-shadow: 24;
+    padding: 4;
+}

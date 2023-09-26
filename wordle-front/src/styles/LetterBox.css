@@ -1,0 +1,12 @@
+.letterBox {
+    display: flex;
+    border: 1px solid;
+    box-sizing: content-box;
+    width: 60px;
+    height: 50px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    color: white;
+}

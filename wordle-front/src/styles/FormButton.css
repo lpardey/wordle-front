@@ -1,0 +1,9 @@
+.formButton {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: "#8B38F7";
+}
+
+.formButton:hover {
+    background-color: "#700af5";
+}
