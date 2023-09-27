@@ -4,7 +4,7 @@ import "../../styles/LetterBox.css"
 export default function Letter({ letter, backgroundColor }) {
     return (
         <Box className="letterBox" sx={{ backgroundColor: backgroundColor }}>
-            {letter}
+            {letter.toUpperCase()}
         </Box>
     )
 }

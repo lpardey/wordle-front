@@ -6,7 +6,6 @@ import FormBottom from "./Form/FormBottom";
 import WindowPopUp from "./Form/WindowPopUp";
 import useToggle from "../hooks/useToggle";
 import useForm from "../hooks/useForm";
-import usePopUp from "../hooks/usePopUp";
 import WordleClient from "../clients/wordleClient/wordleClient";
 import LockIcon from "@mui/icons-material/Lock";
 import { useNavigate } from "react-router-dom";
@@ -17,21 +16,21 @@ export default function UserLoginForm() {
     const [inputs, handleChange, resetInputs] = useForm({ username: "", password: "" });
     const [failMessage, setFailMessage] = useState("");
     const [isSuccess, toggleIsSuccess] = useToggle(false);
-    const [showPopUp, openPopUp, closePopUp] = usePopUp(false);
+    const [open, toggleOpen] = useToggle(false)
     const client = new WordleClient();
     const navigate = useNavigate();
-    const handleClosePopUp = () => { resetInputs(); closePopUp() };
     const handleSubmit = async (e) => {
         e.preventDefault();
         const response = await client.loginUser(inputs.username, inputs.password);
         if (response !== undefined) {
             setFailMessage(response.detail);
-            openPopUp();
+            toggleOpen();
         } else {
             toggleIsSuccess();
-            openPopUp();
+            toggleOpen();
             setTimeout(() => { navigate("/") }, 4000);
         }
+        resetInputs();
     };
     return (
         <>
@@ -46,19 +45,15 @@ export default function UserLoginForm() {
                 />
                 <FormButton buttonText={"Submit"} />
             </form>
-            {showPopUp ?
-                <WindowPopUp
-                    open={showPopUp}
-                    handleClose={!isSuccess ? handleClosePopUp : null}
-                    isSuccess={isSuccess}
-                    succesTitle={"Success!"}
-                    succesMessage={"Redirecting to the game..."}
-                    failTitle={"Try again..."}
-                    failMessage={`${failMessage}.`}
-                />
-                :
-                null
-            }
+            <WindowPopUp
+                open={open}
+                handleClose={!isSuccess ? toggleOpen : null}
+                isSuccess={isSuccess}
+                succesTitle={"Success!"}
+                succesMessage={"Redirecting to the game..."}
+                failTitle={"Try again..."}
+                failMessage={`${failMessage}.`}
+            />
             <FormBottom
                 bottomText={"No account? "}
                 linkText={"Register!"}
