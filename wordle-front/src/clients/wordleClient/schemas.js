@@ -24,4 +24,17 @@ class LoginUserResponse {
         this.detail = detail;
     }
 }
-export { CreateUserRequest, CreateUserResponse, LoginUserRequest, LoginUserResponse }
+
+class TakeAGuessRequest {
+    constructor(guess) {
+        this.guess = guess;
+    }
+}
+
+class TakeAGuessResponse {
+    constructor({ detail }) {
+        this.detail = detail
+    }
+}
+
+export { CreateUserRequest, CreateUserResponse, LoginUserRequest, LoginUserResponse, TakeAGuessRequest, TakeAGuessResponse }
