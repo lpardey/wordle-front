@@ -1,6 +1,12 @@
 import axios from 'axios'
-
-import { CreateUserRequest, CreateUserResponse, LoginUserRequest, LoginUserResponse } from './schemas'
+import {
+  CreateUserRequest,
+  CreateUserResponse,
+  LoginUserRequest,
+  LoginUserResponse,
+  TakeAGuessRequest,
+  TakeAGuessResponse
+} from './schemas'
 
 class WordleClient {
   constructor() {
@@ -26,6 +32,17 @@ class WordleClient {
       return parsed_response
     }
   }
+
+  async takeAGuess(guess, playerId, gameId) {
+    const request = new TakeAGuessRequest(guess)
+    try {
+      await this.client.post(`/game/${playerId}/${gameId}/guess`, request)
+    } catch (error) {
+      const parsed_response = new TakeAGuessResponse(error.response.data)
+      return parsed_response
+    }
+  }
 }
+
 
 export default WordleClient
