@@ -8,7 +8,7 @@ import { gameFormStyle } from "../styles/Styles";
 import { useEffect, useState } from "react";
 import EndGamePopUp from "./Game/EndGamePopUp";
 
-export default function Wordle() {
+export default function Game() {
     // Get game status info(game word: str, guesses: list[dict[str, list[int]]], game_id) 
     // from api endpoint: http://wordle_back:8000/game/`${game_id}`.
     const [gameWord, setGameWord] = useState("CYDER")
