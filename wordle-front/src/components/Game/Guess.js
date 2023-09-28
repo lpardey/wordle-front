@@ -1,7 +1,14 @@
 import Letter from "./Letter"
 import Stack from "@mui/material/Stack"
 
-export default function Guess({ word, status, getBackgroundColor }) {
+
+const colors = {
+    0: "#61D78C",
+    1: "#F1F483",
+    2: "#797979"
+}
+
+export default function Guess({ word, status }) {
     const lettersWithStatus = getLettersWithStatus(word, status)
     return (
         <Stack direction={"row"}>
@@ -9,7 +16,7 @@ export default function Guess({ word, status, getBackgroundColor }) {
                 <Letter
                     key={index}
                     letter={letter}
-                    backgroundColor={getBackgroundColor(letter_status)}
+                    backgroundColor={colors[letter_status]}
                 />
             ))}
         </Stack>

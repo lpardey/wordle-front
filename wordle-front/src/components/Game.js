@@ -11,17 +11,14 @@ import EndGamePopUp from "./Game/EndGamePopUp";
 export default function Game() {
     // Get game status info(game word: str, guesses: list[dict[str, list[int]]], game_id) 
     // from api endpoint: http://wordle_back:8000/game/`${game_id}`.
-    const [gameWord, setGameWord] = useState("CYDER")
 
     const [guesses, setGuesses] = useState([]) // { word: "cloud", letters_status: [0, 2, 2, 2, 1] }
-    const [attempts, setAttempts] = useState(0)
     const [guessStatus, setGuessStatus] = useState({})
 
     const [guess, setGuess] = useState("")
     // const [gameStatus, setGameStatus] = useState("WAITING_FOR_GUESS")
-    const [maxAttempts, setMaxAttempts] = useState(5)
+    const [maxAttempts, setMaxAttempts] = useState(6)
     const [openSnackBar, toggleOpenSnackbar] = useToggle(false)
-
     const [endGamePopUp, toggleEndGamePopUp] = useToggle(false)
 
     const handleChange = (e) => { setGuess(e.target.value) }
@@ -33,11 +30,10 @@ export default function Game() {
         e.preventDefault();
         setGuess("");
         const response = await client.takeAGuess(guess, 0, 0)
-        if (response !== undefined) {
-            guesses[attempts] = { word: guess, letters_status: response.detail.guess_letters_status }
-            setGuesses([...guesses])
-            setAttempts(attempts + 1)
-            setGuessStatus({ status: response.detail.status, message: response.detail.message, result: response.detail.guess_result })
+        if (response.status !== "ERROR") {
+            guesses.push({ word: guess, letters_status: response.letters_status })
+            setGuesses(guesses)
+            setGuessStatus({ status: response.status, message: response.message, result: response.guess_result })
         } else {
             // Something unexpected happened
         }
@@ -66,8 +62,8 @@ export default function Game() {
         }
         toggleOpenSnackbar()
     };
-    const gameSnackbarMessage = !guessStatus.status ? guessStatus.message : `Attempts left: ${maxAttempts - attempts}`
-    const isOver = (guessStatus.status === "OK" && guessStatus.result === "GUESSED") || (guessStatus.status === "ERROR" && attempts === maxAttempts)
+    const gameSnackbarMessage = !guessStatus.status ? guessStatus.message : `Attempts left: ${maxAttempts - guesses.length}`
+    const isOver = (guessStatus.status === "OK" && guessStatus.result === "GUESSED") || (guessStatus.status === "ERROR" && guesses.length === maxAttempts)
     return (
         <>
             <GameBoard guesses={guesses} maxAttempts={maxAttempts} />
@@ -91,7 +87,7 @@ export default function Game() {
                     handleClose={isOver ? toggleEndGamePopUp : null}
                     guessStatus={guessStatus.status}
                     guessStatusResult={guessStatus.result}
-                    attempts={attempts}
+                    attempts={guesses.length}
                     maxAttempts={maxAttempts}
                     winnerTitle={"IT'S A MATCH!"}
                     winnerMessage={"Congratulations, you guessed the word"}

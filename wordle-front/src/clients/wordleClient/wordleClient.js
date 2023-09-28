@@ -36,9 +36,11 @@ class WordleClient {
   async takeAGuess(guess, playerId, gameId) {
     const request = new TakeAGuessRequest(guess)
     try {
-      await this.client.post(`/game/${playerId}/${gameId}/guess`, request)
+      const raw_response = await this.client.post(`/game/${playerId}/${gameId}/guess`, request)
+      return new TakeAGuessResponse(raw_response.data)
     } catch (error) {
-      const parsed_response = new TakeAGuessResponse(error.response.data)
+      const message = error.response.data.detail
+      const parsed_response = new TakeAGuessResponse({ status: "ERROR", message: message })
       return parsed_response
     }
   }

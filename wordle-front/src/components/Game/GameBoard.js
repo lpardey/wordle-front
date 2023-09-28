@@ -3,7 +3,6 @@ import Stack from "@mui/material/Stack"
 
 export default function GameBoard({ guesses, maxAttempts }) {
     const board = getBoard(guesses, maxAttempts)
-    const getBackgroundColor = (number) => number === 0 ? "#61D78C" : number === 1 ? "#F1F483" : "#797979"
     return (
         <Stack direction={"column"}>
             {board.map(({ word, letters_status }, index) => (
@@ -11,7 +10,6 @@ export default function GameBoard({ guesses, maxAttempts }) {
                     key={index}
                     word={word || ""}
                     status={letters_status || ""}
-                    getBackgroundColor={getBackgroundColor}
                 />
             ))}
         </Stack>
@@ -19,10 +17,8 @@ export default function GameBoard({ guesses, maxAttempts }) {
 }
 
 function getBoard(guesses, maxAttempts) {
-    const guessesAmount = guesses.length
-    if (guessesAmount < maxAttempts) {
-        const toComplete = Array(maxAttempts - guessesAmount).fill({})
-        guesses.push(...toComplete)
-    }
-    return guesses
+    const remainingAttempts = maxAttempts - guesses.length
+    const emptyRow = { letters_status: [2, 2, 2, 2, 2] }
+    const filler = (remainingAttempts > 0) ? Array(remainingAttempts).fill(emptyRow) : []
+    return guesses.concat(filler)
 }

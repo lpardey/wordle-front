@@ -32,8 +32,15 @@ class TakeAGuessRequest {
 }
 
 class TakeAGuessResponse {
-    constructor({ detail }) {
-        this.detail = detail
+    constructor({ guess_result, status, message, guess_letters_status }) {
+        this.guess_result = guess_result;
+        this.status = status;
+        this.message = message;
+        this.letters_status = guess_letters_status;
+    }
+
+    isOver() {
+        return this.guess_result === "GUESSED" || this.status === "ERROR";
     }
 }
 
