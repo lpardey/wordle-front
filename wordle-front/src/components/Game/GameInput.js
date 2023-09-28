@@ -17,3 +17,11 @@ export default function GameInput({ guess, handleChange }) {
         />
     )
 }
+
+// function handleKeyUp(event) {
+//     //key code for enter
+//     if (event.keyCode === 13) {
+//         event.preventDefault();
+//         event.target.blur();
+//     }
+// }
