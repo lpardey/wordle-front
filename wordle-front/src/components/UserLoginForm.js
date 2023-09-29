@@ -21,9 +21,9 @@ export default function UserLoginForm() {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await client.loginUser(inputs.username, inputs.password);
-        if (response !== undefined) {
-            setFailMessage(response.detail);
+        const loginUserResponse = await client.loginUser(inputs.username, inputs.password);
+        if (loginUserResponse.error) {
+            setFailMessage(loginUserResponse.error);
             toggleOpen();
         } else {
             toggleIsSuccess();
