@@ -23,14 +23,18 @@ export default function UserRegistration() {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await client.createUser(inputs.username, inputs.email, inputs.password);
-        if (response !== undefined) {
-            setFailMessage(response.detail);
+        const createUserResponse = await client.createUser(inputs.username, inputs.email, inputs.password);
+        if (createUserResponse.error) {
+            setFailMessage(createUserResponse.error);
             toggleOpen();
         } else {
             toggleIsSuccess();
             toggleOpen();
-            setTimeout(() => { navigate("/") }, 4000);
+            const createGameResponse = await client.createGame(createUserResponse.playerId);
+            console.log(createUserResponse.playerId)
+            console.log(createGameResponse.gameId)
+            const gamePath = `/${createUserResponse.playerId}/${createGameResponse.gameId}`
+            setTimeout(() => { navigate(gamePath) }, 4000);
         }
         resetInputs();
     };
