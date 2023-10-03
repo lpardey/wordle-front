@@ -1,6 +1,6 @@
 import TextField from "@mui/material/TextField"
 
-export default function GameInput({ guess, handleChange }) {
+export default function GameInput({ guess, handleChange, handleDisabled }) {
     const textSX = { width: "130px", marginTop: "24px" }
     const inputProps = { maxLength: 5, style: { textAlign: "center", textTransform: "uppercase" } }
     return (
@@ -14,6 +14,7 @@ export default function GameInput({ guess, handleChange }) {
             onChange={handleChange}
             inputProps={inputProps}
             sx={textSX}
+            disabled={handleDisabled}
         />
     )
 }
