@@ -11,30 +11,17 @@ import { useParams } from "react-router-dom";
 
 export default function Game() {
     let { playerId, gameId } = useParams()
-
-    const [guesses, setGuesses] = useState([]) // { word: "cloud", letters_status: [0, 2, 2, 2, 1] }
+    const initialGuesses = JSON.parse(window.localStorage.getItem("guesses") || [])
+    const [guesses, setGuesses] = useState(initialGuesses)
+    useEffect(() => {
+        window.localStorage.setItem("guesses", JSON.stringify(guesses));
+    })
     const [guessStatus, setGuessStatus] = useState({ status: "", message: "", result: "" })
-
     const [guess, setGuess] = useState("")
-    // const [gameStatus, setGameStatus] = useState("WAITING_FOR_GUESS")
     const [maxAttempts, setMaxAttempts] = useState(6)
     const [endGamePopUp, toggleEndGamePopUp] = useToggle(false)
-
-    const handleChange = (e) => { setGuess(e.target.value) }
-
-    // TODO
-    // hacer un get al back para el game status
-    // guardar el game status en el localStorage
-    // que no muestre el juego si hay partida en el localStorage sino que se cree una nueva
-
     const client = new WordleClient();
-
-    // takeAGuessResponse
-    // status "OK" | "ERROR"
-    // message str | None
-    // guess_result "GUESSED" | "NOT_GUESSED"
-    // guess_letters_status list[LetterStatus] | None
-
+    const handleChange = (e) => { setGuess(e.target.value) }
     const handleSubmit = async (e) => {
         e.preventDefault();
         const takeAGuessResponse = await client.takeAGuess(guess, playerId, gameId)
@@ -45,7 +32,6 @@ export default function Game() {
         setGuessStatus({ status: takeAGuessResponse.status, message: takeAGuessResponse.message, result: takeAGuessResponse.guess_result })
         setGuess("");
     }
-
     const isOver = (guessStatus.result === "GUESSED") || (guesses.length === maxAttempts)
     useEffect(() => {
         if (isOver) {
@@ -81,7 +67,6 @@ export default function Game() {
     const gameSnackbarMessage = guessStatus.status === "ERROR" ? guessStatus.message : `Attempts left: ${(maxAttempts - guesses.length) - 1}`
     return (
         <>
-            {console.log(guessStatus)}
             <GameBoard guesses={guesses} maxAttempts={maxAttempts} />
             <form onSubmit={handleSubmit} style={gameFormStyle}>
                 <GameInput
