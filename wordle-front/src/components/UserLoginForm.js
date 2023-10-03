@@ -22,13 +22,16 @@ export default function UserLoginForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const loginUserResponse = await client.loginUser(inputs.username, inputs.password);
-        if (loginUserResponse.error) {
-            setFailMessage(loginUserResponse.error);
+        if (loginUserResponse.detail) {
+            setFailMessage(loginUserResponse.detail);
             toggleOpen();
         } else {
             toggleIsSuccess();
             toggleOpen();
-            setTimeout(() => { navigate("/") }, 4000);
+            const createGameResponse = await client.createGame(loginUserResponse.playerId);
+            setTimeout(() => {
+                navigate(`/${loginUserResponse.playerId}/${createGameResponse.gameId}`)
+            }, 4000);
         }
         resetInputs();
     };
