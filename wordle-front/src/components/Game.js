@@ -11,14 +11,18 @@ import { useParams } from "react-router-dom";
 
 export default function Game() {
     let { playerId, gameId } = useParams()
-    const initialGuesses = JSON.parse(window.localStorage.getItem("guesses") || [])
+    const initialGuesses = JSON.parse(window.localStorage.getItem("guesses")) || []
     const [guesses, setGuesses] = useState(initialGuesses)
     useEffect(() => {
         window.localStorage.setItem("guesses", JSON.stringify(guesses));
     })
+    // Pocho fix: clears the storage on window refresh/close tab event
+    window.onbeforeunload = function (e) {
+        localStorage.clear();
+    };
     const [guessStatus, setGuessStatus] = useState({ status: "", message: "", result: "" })
     const [guess, setGuess] = useState("")
-    const [maxAttempts, setMaxAttempts] = useState(6)
+    const [maxAttempts] = useState(6)
     const [endGamePopUp, toggleEndGamePopUp] = useToggle(false)
     const client = new WordleClient();
     const handleChange = (e) => { setGuess(e.target.value) }
