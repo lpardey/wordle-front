@@ -14,7 +14,7 @@ class CreateUserResponse {
 
 class FailedCreateUserResponse {
     constructor({ detail }) {
-        this.error = detail
+        this.detail = detail
     }
 }
 
@@ -33,7 +33,7 @@ class GetUserResponse {
 
 class FailedGetUserResponse {
     constructor({ detail }) {
-        this.error = detail
+        this.detail = detail
     }
 }
 
@@ -45,15 +45,17 @@ class LoginUserRequest {
 }
 
 class LoginUserResponse {
-    constructor({ access_token, token_type }) {
-        this.accessToken = access_token;
-        this.tokenType = token_type;
+    constructor({ player_id, session_id, token, session_expiration_date }) {
+        this.playerId = player_id;
+        this.sessionId = session_id;
+        this.token = token;
+        this.sessionExpirationDate = session_expiration_date;
     }
 }
 
 class FailedLoginUserResponse {
     constructor({ detail }) {
-        this.error = detail;
+        this.detail = detail;
     }
 }
 
@@ -65,8 +67,9 @@ class CreateGameRequest {
 }
 
 class CreateGameResponse {
-    constructor({ game_id }) {
+    constructor({ game_id, game_expiration_date }) {
         this.gameId = game_id;
+        this.gameExpirationDate = game_expiration_date;
     }
 }
 
