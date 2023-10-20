@@ -17,7 +17,12 @@ import {
 
 class WordleClient {
   constructor() {
-    this.client = axios.create({ baseURL: 'http://localhost:8000', withCredentials: false })
+    this.client = axios.create({
+      baseURL: 'http://localhost:8000', withCredentials: false,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`
+      }
+    })
   }
 
   async createUser(username, email, password) {
