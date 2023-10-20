@@ -1,11 +1,13 @@
 import Typography from "@mui/material/Typography"
 import { Link } from "react-router-dom"
 
-export default function FormBottom({ bottomText, linkText, linkReference, handleLink }) {
+export default function FormBottom({ bottomText, linkText, linkReference }) {
+    const linkStyle = { marginTop: "80px", color: "#8B38F7" }
+    const textSX = { marginTop: "8px", marginBottom: "8px" }
     return (
-        <Typography component={"p"} variant="subtitle1" sx={{ marginTop: 1, marginBottom: 1, }} >
+        <Typography component={"p"} variant="subtitle1" sx={textSX} >
             {bottomText}
-            <Link to={linkReference} onClick={handleLink} style={{ marginTop: 10, color: "#8B38F7" }}>
+            <Link to={linkReference} style={linkStyle}>
                 {linkText}
             </Link>
         </Typography>

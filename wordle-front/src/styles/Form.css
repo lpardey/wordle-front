@@ -1,0 +1,18 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    max-width: 260px;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    margin-top: 40px;
+    padding: 40px;
+    border-radius: 20px;
+    border: 0.1em solid #a6a6a6;
+    box-shadow: 10px 10px 15px #ccc;
+    background-color: #faf9fa;
+}
+
+.form:hover {
+    box-shadow: 15px 15px 25px #ccc;
+}

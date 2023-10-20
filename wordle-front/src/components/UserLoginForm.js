@@ -1,20 +1,19 @@
 import FormTop from "./Form/FormTop";
 import UsernameInput from "./Form/UsernameInput";
-import EmailInput from "./Form/EmailInput";
 import PasswordInput from "./Form/PasswordInput";
 import FormButton from "./Form/FormButton";
 import FormBottom from "./Form/FormBottom";
-import WindowPopUp from './Form/WindowPopUp';
+import WindowPopUp from "./Form/WindowPopUp";
 import useToggle from "../hooks/useToggle";
 import useForm from "../hooks/useForm";
-import WordleClient from '../clients/wordleClient/wordleClient';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import WordleClient from "../clients/wordleClient/wordleClient";
+import LockIcon from "@mui/icons-material/Lock";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-export default function UserRegistration() {
+export default function UserLoginForm() {
     const [showPassword, togglePassword] = useToggle(false);
-    const [inputs, handleChange, resetInputs] = useForm({ username: "", email: "", password: "" });
+    const [inputs, handleChange, resetInputs] = useForm({ username: "", password: "" });
     const [failMessage, setFailMessage] = useState("");
     const [isSuccess, toggleIsSuccess] = useToggle(false);
     const [open, toggleOpen] = useToggle(false)
@@ -22,23 +21,25 @@ export default function UserRegistration() {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const createUserResponse = await client.createUser(inputs.username, inputs.email, inputs.password);
-        if (createUserResponse.detail) {
-            setFailMessage(createUserResponse.detail);
+        const loginUserResponse = await client.loginUser(inputs.username, inputs.password);
+        if (loginUserResponse.detail) {
+            setFailMessage(loginUserResponse.detail);
             toggleOpen();
         } else {
             toggleIsSuccess();
             toggleOpen();
-            setTimeout(() => { navigate("/login") }, 4000);
+            const createGameResponse = await client.createGame(loginUserResponse.playerId);
+            setTimeout(() => {
+                navigate(`/${loginUserResponse.playerId}/${createGameResponse.gameId}`)
+            }, 4000);
         }
         resetInputs();
     };
     return (
         <>
-            <FormTop topText={"Register"} icon={<AppRegistrationIcon />} />
+            <FormTop topText={"Log In"} icon={<LockIcon />} />
             <form onSubmit={handleSubmit}>
                 <UsernameInput value={inputs.username} handleChange={handleChange} />
-                <EmailInput value={inputs.email} handleChange={handleChange} />
                 <PasswordInput
                     value={inputs.password}
                     handleChange={handleChange}
@@ -52,14 +53,14 @@ export default function UserRegistration() {
                 handleClose={!isSuccess ? toggleOpen : null}
                 isSuccess={isSuccess}
                 succesTitle={"Success!"}
-                succesMessage={<span>Thank you for joining <span style={{ color: "purple", fontWeight: "bold" }}>Wordlematic!</span></span>}
+                succesMessage={"Redirecting to the game..."}
                 failTitle={"Try again..."}
                 failMessage={`${failMessage}.`}
             />
             <FormBottom
-                bottomText={"Do you have an account? "}
-                linkText={"Log In!"}
-                linkReference={"/login"}
+                bottomText={"No account? "}
+                linkText={"Register!"}
+                linkReference={"/registration"}
             />
         </>
     )

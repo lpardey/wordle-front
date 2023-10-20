@@ -4,6 +4,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 
 export default function Input({ label, value, handleChange, type, icon = null }) {
     const lowerCaseLabel = label.toLowerCase()
+    const formControlSX = { marginTop: "8px", marginBottom: "8px", backgroundColor: "white" }
     return (
         <FormControl
             margin="normal"
@@ -11,14 +12,17 @@ export default function Input({ label, value, handleChange, type, icon = null })
             color="secondary"
             required
             fullWidth
-            sx={{ marginTop: 1, marginBottom: 1, backgroundColor: "white" }}
+            sx={formControlSX}
         >
             <InputLabel htmlFor={`outlined-adornment-${lowerCaseLabel}`} >{label}</InputLabel>
             <OutlinedInput
                 id={`outlined-adornment-${lowerCaseLabel}`}
                 name={lowerCaseLabel}
                 value={value}
-                onChange={handleChange} label={label} type={type} endAdornment={icon}
+                onChange={handleChange}
+                label={label}
+                type={type}
+                endAdornment={icon}
             />
         </FormControl>
     )
