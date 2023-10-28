@@ -3,14 +3,14 @@ import GameInput from "./Game/GameInput";
 import GameButton from "./Game/GameButton";
 import GameSnackbar from "./Game/GameSnackbar";
 import EndGamePopUp from "./Game/EndGamePopUp";
-import WordleClient from "../clients/wordleClient/wordleClient";
+import WordleClient from "../client/WordleClient";
 import useToggle from "../hooks/useToggle";
 import { gameFormStyle } from "../styles/Styles";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function Game() {
-    let { playerId, gameId } = useParams()
+    let { gameId } = useParams()
     const initialGuesses = JSON.parse(window.localStorage.getItem("guesses")) || []
     const [guesses, setGuesses] = useState(initialGuesses)
     useEffect(() => {
@@ -28,12 +28,12 @@ export default function Game() {
     const handleChange = (e) => { setGuess(e.target.value) }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const takeAGuessResponse = await client.takeAGuess(guess, playerId, gameId)
+        const takeAGuessResponse = await client.takeAGuess(guess, gameId)
         if (takeAGuessResponse.status === "OK" && guesses.length < maxAttempts) {
-            guesses.push({ word: guess, letters_status: takeAGuessResponse.letters_status })
+            guesses.push({ word: guess, lettersStatus: takeAGuessResponse.lettersStatus })
             setGuesses(guesses)
         };
-        setGuessStatus({ status: takeAGuessResponse.status, message: takeAGuessResponse.message, result: takeAGuessResponse.guess_result })
+        setGuessStatus({ status: takeAGuessResponse.status, message: takeAGuessResponse.message, result: takeAGuessResponse.guessResult })
         setGuess("");
     }
     const isOver = (guessStatus.result === "GUESSED") || (guesses.length === maxAttempts)

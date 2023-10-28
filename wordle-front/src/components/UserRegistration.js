@@ -7,7 +7,7 @@ import FormBottom from "./Form/FormBottom";
 import WindowPopUp from './Form/WindowPopUp';
 import useToggle from "../hooks/useToggle";
 import useForm from "../hooks/useForm";
-import WordleClient from '../clients/wordleClient/wordleClient';
+import WordleClient from "../client/WordleClient";
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -27,9 +27,11 @@ export default function UserRegistration() {
             setFailMessage(createUserResponse.detail);
             toggleOpen();
         } else {
+            await client.loginUser(inputs.username, inputs.password)
+            const createGameResponse = await client.createGame()
             toggleIsSuccess();
             toggleOpen();
-            setTimeout(() => { navigate("/login") }, 4000);
+            setTimeout(() => { navigate(`/${createUserResponse.userId}/${createGameResponse.gameId}`) }, 4000);
         }
         resetInputs();
     };

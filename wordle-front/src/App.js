@@ -9,7 +9,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
-        <Route path="/:playerId/:gameId" element={<Wordlematic />} />
+        <Route path="/:userId/:gameId" element={<Wordlematic />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="*" element={<PageNotFound />} />
