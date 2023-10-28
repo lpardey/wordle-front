@@ -6,7 +6,7 @@ import FormBottom from "./Form/FormBottom";
 import WindowPopUp from "./Form/WindowPopUp";
 import useToggle from "../hooks/useToggle";
 import useForm from "../hooks/useForm";
-import WordleClient from "../clients/wordleClient/wordleClient";
+import WordleClient from "../client/WordleClient";
 import LockIcon from "@mui/icons-material/Lock";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -28,9 +28,9 @@ export default function UserLoginForm() {
         } else {
             toggleIsSuccess();
             toggleOpen();
-            const createGameResponse = await client.createGame(loginUserResponse.playerId);
+            const createGameResponse = await client.createGame(loginUserResponse.userId);
             setTimeout(() => {
-                navigate(`/${loginUserResponse.playerId}/${createGameResponse.gameId}`)
+                navigate(`/${loginUserResponse.userId}/${createGameResponse.gameId}`)
             }, 4000);
         }
         resetInputs();
