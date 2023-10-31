@@ -14,6 +14,8 @@ import {
   TakeAGuessResponse,
   CreateGameResponse,
   FailedCreateGameResponse,
+  OngoingGameResponse,
+  FailedOngoingGameResponse,
 } from './helpers/game/schemas';
 
 class WordleClient {
@@ -86,8 +88,19 @@ class WordleClient {
     }
   }
 
-  async getGameStatus(userId, gameId) {
+  async getOngoingGameStatus() {
+    try {
+      const rawResponse = await this.client.get("/game/ongoing_game")
+      return new OngoingGameResponse(rawResponse.data)
+    } catch (error) {
+      return new FailedOngoingGameResponse(error.response.data)
+    }
+  }
 
+  async getGameStatus(userId, gameId) {
+    // try {
+    //   const rawResponse = await this.client.get(`/status/${gameId}`)
+    // }
   }
 
   async getUserId(username) {

@@ -11,10 +11,10 @@ import { useParams } from "react-router-dom";
 
 export default function Game() {
     let { gameId } = useParams()
-    const initialGuesses = JSON.parse(window.localStorage.getItem("guesses")) || []
+    const initialGuesses = JSON.parse(localStorage.getItem("guesses")) || []
     const [guesses, setGuesses] = useState(initialGuesses)
     useEffect(() => {
-        window.localStorage.setItem("guesses", JSON.stringify(guesses));
+        localStorage.setItem("guesses", JSON.stringify(guesses));
     })
     // Pocho fix: clears the storage on window refresh/close tab event
     window.onbeforeunload = function (e) {
