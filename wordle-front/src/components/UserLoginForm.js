@@ -10,6 +10,7 @@ import WordleClient from "../client/WordleClient";
 import LockIcon from "@mui/icons-material/Lock";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import redirectToGame from "./helpers/redirectToGame";
 
 export default function UserLoginForm() {
     const [showPassword, togglePassword] = useToggle(false);
@@ -28,10 +29,7 @@ export default function UserLoginForm() {
         } else {
             toggleIsSuccess();
             toggleOpen();
-            const createGameResponse = await client.createGame(loginUserResponse.userId);
-            setTimeout(() => {
-                navigate(`/${loginUserResponse.userId}/${createGameResponse.gameId}`)
-            }, 4000);
+            redirectToGame(client, loginUserResponse.userId, navigate)
         }
         resetInputs();
     };
