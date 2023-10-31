@@ -31,9 +31,24 @@ class TakeAGuessResponse {
     }
 }
 
+class OngoingGameResponse {
+    constructor({ ongoing_game, game_status }) {
+        this.ongoingGame = ongoing_game
+        this.gameStatus = game_status
+    }
+}
+
+class FailedOngoingGameResponse {
+    constructor({ detail }) {
+        this.detail = detail
+    }
+}
+
 export {
     CreateGameResponse,
     FailedCreateGameResponse,
     TakeAGuessRequest,
     TakeAGuessResponse,
+    OngoingGameResponse,
+    FailedOngoingGameResponse
 }
