@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 
-import { useState, useEffect } from "react";
-
-export default function useTimer(initialDate, durationInHours) {
+const useTimer = (initialDate, durationInHours) => {
     const targetTime = new Date(initialDate);
     targetTime.setHours(targetTime.getHours() + durationInHours);
-
     const [remainingTime, setRemainingTime] = useState(targetTime - new Date());
 
     useEffect(() => {
@@ -26,3 +23,5 @@ export default function useTimer(initialDate, durationInHours) {
 
     return [hours, minutes, seconds];
 }
+
+export default useTimer

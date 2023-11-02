@@ -9,6 +9,7 @@ const createHTTPClient = (customConfig = {}) => {
     }
     const clientConfig = { ...defaultConfig, ...customConfig }
     const HTTPClient = axios.create(clientConfig);
+
     return HTTPClient
 }
 
