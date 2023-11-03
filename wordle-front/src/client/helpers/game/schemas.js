@@ -6,12 +6,6 @@ class CreateGameResponse {
     }
 }
 
-class FailedCreateGameResponse {
-    constructor({ detail }) {
-        this.detail = detail
-    }
-}
-
 class TakeAGuessRequest {
     constructor(guess) {
         this.guess = guess;
@@ -38,17 +32,18 @@ class OngoingGameResponse {
     }
 }
 
-class FailedOngoingGameResponse {
-    constructor({ detail }) {
-        this.detail = detail
+class LastGameResponse {
+    constructor({ game_id, game_word, finished_date }) {
+        this.gameId = game_id
+        this.gameWord = game_word
+        this.finishedDate = finished_date
     }
 }
 
 export {
     CreateGameResponse,
-    FailedCreateGameResponse,
     TakeAGuessRequest,
     TakeAGuessResponse,
     OngoingGameResponse,
-    FailedOngoingGameResponse
+    LastGameResponse,
 }
