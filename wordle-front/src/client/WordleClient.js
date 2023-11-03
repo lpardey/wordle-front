@@ -2,20 +2,17 @@ import createHTTPClient from './helpers/createHTTPClient';
 import {
   CreateUserRequest,
   CreateUserResponse,
-  FailedCreateUserResponse,
   GetUserRequest,
   GetUserResponse,
-  FailedGetUserResponse,
   LoginUserResponse,
-  FailedLoginUserResponse,
+  FailedResponse,
 } from './helpers/user/schemas';
 import {
   TakeAGuessRequest,
   TakeAGuessResponse,
   CreateGameResponse,
-  FailedCreateGameResponse,
   OngoingGameResponse,
-  FailedOngoingGameResponse,
+  LastGameResponse,
 } from './helpers/game/schemas';
 
 class WordleClient {
@@ -29,7 +26,7 @@ class WordleClient {
       const rawResponse = await this.client.post("/account/create", request);
       return new CreateUserResponse(rawResponse.data)
     } catch (error) {
-      return new FailedCreateUserResponse(error.response.data);
+      return new FailedResponse(error.response.data);
     }
   }
 
@@ -38,7 +35,7 @@ class WordleClient {
       const rawResponse = await this.client.get("/account/me");
       return new GetUserResponse(rawResponse.data)
     } catch (error) {
-      return new FailedGetUserResponse(error.response.data);
+      return new FailedResponse(error.response.data);
     }
   }
 
@@ -48,7 +45,7 @@ class WordleClient {
       const rawResponse = await this.client.get(`/account/${username}`, request);
       return new GetUserResponse(rawResponse.data)
     } catch (error) {
-      return new FailedGetUserResponse(error.response.data);
+      return new FailedResponse(error.response.data);
     }
   }
 
@@ -64,7 +61,7 @@ class WordleClient {
       this.client = createHTTPClient()
       return loginUserResponse
     } catch (error) {
-      return new FailedLoginUserResponse(error.response.data)
+      return new FailedResponse(error.response.data)
     }
   }
 
@@ -84,7 +81,7 @@ class WordleClient {
       const rawResponse = await this.client.post("/game/create")
       return new CreateGameResponse(rawResponse.data)
     } catch (error) {
-      return new FailedCreateGameResponse(error.response.data)
+      return new FailedResponse(error.response.data)
     }
   }
 
@@ -93,7 +90,16 @@ class WordleClient {
       const rawResponse = await this.client.get("/game/ongoing_game")
       return new OngoingGameResponse(rawResponse.data)
     } catch (error) {
-      return new FailedOngoingGameResponse(error.response.data)
+      return new FailedResponse(error.response.data)
+    }
+  }
+
+  async getLastGame() {
+    try {
+      const rawResponse = await this.client.get("/game/last_game")
+      return new LastGameResponse(rawResponse.data)
+    } catch (error) {
+      return new FailedResponse(error.response.data)
     }
   }
 
