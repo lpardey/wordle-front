@@ -15,12 +15,6 @@ class CreateUserResponse {
     }
 }
 
-class FailedCreateUserResponse {
-    constructor({ detail }) {
-        this.detail = detail
-    }
-}
-
 // Admin
 class GetUserRequest {
     constructor(username) {
@@ -40,12 +34,6 @@ class GetUserResponse {
     }
 }
 
-class FailedGetUserResponse {
-    constructor({ detail }) {
-        this.detail = detail
-    }
-}
-
 class LoginUserResponse {
     constructor({ session_id, user_id, access_token, token_type, session_creation_date }) {
         this.sessionId = session_id;
@@ -56,19 +44,17 @@ class LoginUserResponse {
     }
 }
 
-class FailedLoginUserResponse {
+class FailedResponse {
     constructor({ detail }) {
-        this.detail = detail;
+        this.detail = detail
     }
 }
 
 export {
     CreateUserRequest,
     CreateUserResponse,
-    FailedCreateUserResponse,
     GetUserRequest,
     GetUserResponse,
-    FailedGetUserResponse,
     LoginUserResponse,
-    FailedLoginUserResponse,
+    FailedResponse,
 }
