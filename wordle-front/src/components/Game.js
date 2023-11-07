@@ -15,11 +15,11 @@ export default function Game() {
     const [guesses, setGuesses] = useState(initialGuesses)
     useEffect(() => {
         localStorage.setItem("guesses", JSON.stringify(guesses));
-    }, [guesses])
+    })
     // Pocho fix: clears the storage on window refresh/close tab event
-    window.onbeforeunload = function (e) {
-        localStorage.clear();
-    };
+    // window.onbeforeunload = function (e) {
+    //     localStorage.clear();
+    // };
     const [guessStatus, setGuessStatus] = useState({ status: "", message: "", result: "" })
     const [guess, setGuess] = useState("")
     const [maxAttempts] = useState(6)
