@@ -5,11 +5,11 @@ export default function GameBoard({ guesses, maxAttempts }) {
     const board = getBoard(guesses, maxAttempts)
     return (
         <Stack direction={"column"}>
-            {board.map(({ word, letters_status }, index) => (
+            {board.map(({ word, lettersStatus }, index) => (
                 <Guess
                     key={index}
                     word={word || ""}
-                    status={letters_status || ""}
+                    status={lettersStatus || ""}
                 />
             ))}
         </Stack>
@@ -18,7 +18,7 @@ export default function GameBoard({ guesses, maxAttempts }) {
 
 function getBoard(guesses, maxAttempts) {
     const remainingAttempts = maxAttempts - guesses.length
-    const emptyRow = { letters_status: [2, 2, 2, 2, 2] }
+    const emptyRow = { lettersStatus: [2, 2, 2, 2, 2] }
     const filler = (remainingAttempts > 0) ? Array(remainingAttempts).fill(emptyRow) : []
     return guesses.concat(filler)
 }

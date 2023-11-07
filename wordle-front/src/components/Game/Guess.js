@@ -12,11 +12,11 @@ export default function Guess({ word, status }) {
     const lettersWithStatus = getLettersWithStatus(word, status)
     return (
         <Stack direction={"row"}>
-            {lettersWithStatus.map(({ letter, letter_status }, index) => (
+            {lettersWithStatus.map(({ letter, letterStatus }, index) => (
                 <Letter
                     key={index}
                     letter={letter}
-                    backgroundColor={colors[letter_status]}
+                    backgroundColor={colors[letterStatus]}
                 />
             ))}
         </Stack>
@@ -29,7 +29,7 @@ function getLettersWithStatus(word, status) {
     for (let i = 0; i < gameWordLength; i++) {
         lettersWithStatus.push({
             letter: word[i] || "",
-            letter_status: setStauts(status[i])
+            letterStatus: setStauts(status[i])
         })
     }
     return lettersWithStatus
