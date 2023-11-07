@@ -6,17 +6,17 @@ const useGameStatus = (initialState = {}) => {
 
     useEffect(() => {
         const client = new WordleClient();
-        const fetchCurrentGameStatus = async (client) => {
-            let response = await client.getOngoingGameStatus()
+        const fetchCurrentGameStatus = async () => {
+            const response = await client.getOngoingGameStatus();
+            let finishedDate = response.gameStatus ? response.gameStatus.finished_date : null
             setGameStatus({
                 isGameOngoing: response.ongoingGame,
-                gameFinishedDate: response.gameStatus.finished_date
+                gameFinishedDate: finishedDate
             });
         }
-        fetchCurrentGameStatus(client);
+        fetchCurrentGameStatus();
     }, [])
 
     return [gameStatus.isGameOngoing, gameStatus.gameFinishedDate]
 }
-
 export default useGameStatus
