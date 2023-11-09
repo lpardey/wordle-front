@@ -11,11 +11,26 @@ import { useParams } from "react-router-dom";
 
 export default function Game() {
     let { gameId } = useParams()
-    const initialGuesses = JSON.parse(localStorage.getItem("guesses")) || []
+    const storedGameId = localStorage.getItem("gameId");
+    const storedGuesses = JSON.parse(localStorage.getItem("guesses")) || [];
+    // Check if it's a new game or a reload of the page
+    const isReload = gameId === storedGameId;
+    const initialGuesses = isReload ? storedGuesses : [];
     const [guesses, setGuesses] = useState(initialGuesses)
+
+    const fetchData = async () => {
+        // Update localStorage only if it's a new game
+        if (!isReload) {
+            const game = await client.getOngoingGameStatus();
+            localStorage.setItem("guesses", JSON.stringify(game.gameStatus.guesses));
+            localStorage.setItem("gameId", game.gameStatus.gameId);
+            // localStorage.setItem("guesses", JSON.stringify(guesses));
+        }
+    };
+
     useEffect(() => {
-        localStorage.setItem("guesses", JSON.stringify(guesses));
-    })
+        fetchData();
+    }, [gameId, guesses, isReload]);
     // Pocho fix: clears the storage on window refresh/close tab event
     // window.onbeforeunload = function (e) {
     //     localStorage.clear();
@@ -30,8 +45,12 @@ export default function Game() {
         e.preventDefault();
         const takeAGuessResponse = await client.takeAGuess(guess, gameId)
         if (takeAGuessResponse.status === "OK" && guesses.length < maxAttempts) {
-            guesses.push({ word: guess, lettersStatus: takeAGuessResponse.lettersStatus })
-            setGuesses(guesses)
+            const updatedGuesses = [...guesses, { word: guess, lettersStatus: takeAGuessResponse.lettersStatus }];
+            setGuesses(updatedGuesses);
+            // guesses.push({ word: guess, lettersStatus: takeAGuessResponse.lettersStatus })
+            // setGuesses(guesses)
+            // Update localStorage on each guess
+            localStorage.setItem("guesses", JSON.stringify(updatedGuesses));
         };
         setGuessStatus({ status: takeAGuessResponse.status, message: takeAGuessResponse.message, result: takeAGuessResponse.guessResult })
         setGuess("");
