@@ -44,17 +44,10 @@ class LoginUserResponse {
     }
 }
 
-class FailedResponse {
-    constructor({ detail }) {
-        this.detail = detail
-    }
-}
-
 export {
     CreateUserRequest,
     CreateUserResponse,
     GetUserRequest,
     GetUserResponse,
     LoginUserResponse,
-    FailedResponse,
 }

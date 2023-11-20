@@ -5,10 +5,10 @@ export default function GameBoard({ guesses, maxAttempts }) {
     const board = getBoard(guesses, maxAttempts)
     return (
         <Stack direction={"column"}>
-            {board.map(({ word, lettersStatus }, index) => (
+            {board.map(({ guess, lettersStatus }, index) => (
                 <Guess
                     key={index}
-                    word={word || ""}
+                    word={guess || ""}
                     status={lettersStatus || ""}
                 />
             ))}

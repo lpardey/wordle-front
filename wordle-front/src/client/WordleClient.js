@@ -5,30 +5,21 @@ import {
   GetUserRequest,
   GetUserResponse,
   LoginUserResponse,
-  FailedResponse,
 } from './helpers/user/schemas';
 import {
   TakeAGuessRequest,
   TakeAGuessResponse,
   CreateGameResponse,
-  OngoingGameResponse,
-  LastGameResponse,
+  GameStatusResponse,
 } from './helpers/game/schemas';
+import { FailedResponse } from './helpers/shared/schemas';
 
 class WordleClient {
   constructor() {
     this.client = createHTTPClient();
   }
 
-  async createUser(username, email, password) {
-    const request = new CreateUserRequest(username, email, password);
-    try {
-      const rawResponse = await this.client.post("/account/create", request);
-      return new CreateUserResponse(rawResponse.data)
-    } catch (error) {
-      return new FailedResponse(error.response.data);
-    }
-  }
+  // USER ENDPOINTS
 
   async getUser() {
     try {
@@ -44,6 +35,16 @@ class WordleClient {
     try {
       const rawResponse = await this.client.get(`/account/${username}`, request);
       return new GetUserResponse(rawResponse.data)
+    } catch (error) {
+      return new FailedResponse(error.response.data);
+    }
+  }
+
+  async createUser(username, email, password) {
+    const request = new CreateUserRequest(username, email, password);
+    try {
+      const rawResponse = await this.client.post("/account/create", request);
+      return new CreateUserResponse(rawResponse.data)
     } catch (error) {
       return new FailedResponse(error.response.data);
     }
@@ -65,6 +66,35 @@ class WordleClient {
     }
   }
 
+  // GAME ENDPOINTS
+
+  async createGame() {
+    try {
+      const rawResponse = await this.client.post("/game/create")
+      return new CreateGameResponse(rawResponse.data)
+    } catch (error) {
+      return new FailedResponse(error.response.data)
+    }
+  }
+
+  async getGameStatus(gameId) {
+    try {
+      const rawResponse = await this.client.get(`/game/status/${gameId}`)
+      return new GameStatusResponse(rawResponse.data)
+    } catch (error) {
+      return new FailedResponse(error.response.data)
+    }
+  }
+
+  async getLastGameStatus() {
+    try {
+      const rawResponse = await this.client.get("/game/status/last_game")
+      return new GameStatusResponse(rawResponse.data)
+    } catch (error) {
+      return new FailedResponse(error.response.data)
+    }
+  }
+
   async takeAGuess(guess, gameId) {
     const request = new TakeAGuessRequest(guess)
     try {
@@ -76,42 +106,6 @@ class WordleClient {
     }
   }
 
-  async createGame() {
-    try {
-      const rawResponse = await this.client.post("/game/create")
-      return new CreateGameResponse(rawResponse.data)
-    } catch (error) {
-      return new FailedResponse(error.response.data)
-    }
-  }
-
-  async getOngoingGameStatus() {
-    try {
-      const rawResponse = await this.client.get("/game/ongoing_game")
-      return new OngoingGameResponse(rawResponse.data)
-    } catch (error) {
-      return new FailedResponse(error.response.data)
-    }
-  }
-
-  async getLastGame() {
-    try {
-      const rawResponse = await this.client.get("/game/last_game")
-      return new LastGameResponse(rawResponse.data)
-    } catch (error) {
-      return new FailedResponse(error.response.data)
-    }
-  }
-
-  async getGameStatus(userId, gameId) {
-    // try {
-    //   const rawResponse = await this.client.get(`/status/${gameId}`)
-    // }
-  }
-
-  async getUserId(username) {
-
-  }
 
 }
 

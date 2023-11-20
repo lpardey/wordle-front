@@ -11,54 +11,49 @@ import { useParams } from "react-router-dom";
 
 export default function Game() {
     let { gameId } = useParams()
-    const storedGameId = localStorage.getItem("gameId");
     const storedGuesses = JSON.parse(localStorage.getItem("guesses")) || [];
-    // Check if it's a new game or a reload of the page
-    const isReload = gameId === storedGameId;
-    const initialGuesses = isReload ? storedGuesses : [];
-    const [guesses, setGuesses] = useState(initialGuesses)
-
-    const fetchData = async () => {
-        // Update localStorage only if it's a new game
-        if (!isReload) {
-            const game = await client.getOngoingGameStatus();
-            localStorage.setItem("guesses", JSON.stringify(game.gameStatus.guesses));
-            localStorage.setItem("gameId", game.gameStatus.gameId);
-            // localStorage.setItem("guesses", JSON.stringify(guesses));
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, [gameId, guesses, isReload]);
-    // Pocho fix: clears the storage on window refresh/close tab event
-    // window.onbeforeunload = function (e) {
-    //     localStorage.clear();
-    // };
+    const [guesses, setGuesses] = useState(storedGuesses)
     const [guessStatus, setGuessStatus] = useState({ status: "", message: "", result: "" })
     const [guess, setGuess] = useState("")
     const [maxAttempts] = useState(6)
     const [endGamePopUp, toggleEndGamePopUp] = useToggle(false)
     const client = new WordleClient();
+
+    const fetchData = async () => {
+        const getLastGameStatusResponse = await client.getLastGameStatus();
+        localStorage.setItem("guesses", JSON.stringify(getLastGameStatusResponse.guesses));
+        setGuesses(getLastGameStatusResponse.guesses);
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [gameId]);
+
     const handleChange = (e) => { setGuess(e.target.value) }
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+
+    const takeAGuess = async () => {
         const takeAGuessResponse = await client.takeAGuess(guess, gameId)
         if (takeAGuessResponse.status === "OK" && guesses.length < maxAttempts) {
-            const updatedGuesses = [...guesses, { word: guess, lettersStatus: takeAGuessResponse.lettersStatus }];
+            const updatedGuesses = [...guesses, { guess: guess, lettersStatus: takeAGuessResponse.lettersStatus }];
             setGuesses(updatedGuesses);
-            // guesses.push({ word: guess, lettersStatus: takeAGuessResponse.lettersStatus })
-            // setGuesses(guesses)
-            // Update localStorage on each guess
             localStorage.setItem("guesses", JSON.stringify(updatedGuesses));
         };
         setGuessStatus({ status: takeAGuessResponse.status, message: takeAGuessResponse.message, result: takeAGuessResponse.guessResult })
         setGuess("");
     }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        takeAGuess();
+    }
+
     const isOver = (guessStatus.result === "GUESSED") || (guesses.length === maxAttempts)
+
     useEffect(() => {
         if (isOver) {
-            toggleEndGamePopUp()
+            setTimeout(() => {
+                toggleEndGamePopUp()
+            }, 2000);
         }
     }, [isOver])
 
@@ -66,6 +61,7 @@ export default function Game() {
     const [snackPack, setSnackPack] = useState([]);
     const [openSnackBar, setOpenSnackbar] = useState(false)
     const [messageInfo, setMessageInfo] = useState(undefined);
+
     useEffect(() => {
         if (snackPack.length && !messageInfo) {
             // Set a new snack when we don't have an active one
@@ -81,13 +77,16 @@ export default function Game() {
     const handleClick = (message) => () => {
         setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
     };
+
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setOpenSnackbar(false);
     };
+
     const gameSnackbarMessage = guessStatus.status === "ERROR" ? guessStatus.message : `Attempts left: ${(maxAttempts - guesses.length) - 1}`
+
     return (
         <>
             <GameBoard guesses={guesses} maxAttempts={maxAttempts} />
