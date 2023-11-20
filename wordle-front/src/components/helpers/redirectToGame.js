@@ -1,12 +1,14 @@
 const redirectToGame = async (client, userId, navigate) => {
-    const ongoingGameStatusResponse = await client.getOngoingGameStatus()
+    const getLastGameResponse = await client.getLastGameStatus()
+    const playAgain = localStorage.getItem("playAgain")
     let gameId
 
-    if (ongoingGameStatusResponse.ongoingGame) {
-        gameId = ongoingGameStatusResponse.gameStatus.id
-    } else {
+    if (getLastGameResponse.status === "FINISHED" && playAgain) {
         const createGameResponse = await client.createGame();
         gameId = createGameResponse.gameId
+        localStorage.removeItem("playAgain")
+    } else {
+        gameId = getLastGameResponse.gameId
     }
 
     setTimeout(() => {
