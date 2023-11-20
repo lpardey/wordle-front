@@ -2,7 +2,7 @@
 class CreateGameResponse {
     constructor({ game_id, creation_date }) {
         this.gameId = game_id;
-        this.creationDate = creation_date
+        this.creationDate = creation_date;
     }
 }
 
@@ -25,25 +25,31 @@ class TakeAGuessResponse {
     }
 }
 
-class OngoingGameResponse {
-    constructor({ ongoing_game, game_status }) {
-        this.ongoingGame = ongoing_game
-        this.gameStatus = game_status
+class Guess {
+    constructor({ guess, letters_status }) {
+        this.guess = guess;
+        this.lettersStatus = letters_status
     }
 }
 
-class LastGameResponse {
-    constructor({ game_id, game_word, finished_date }) {
-        this.gameId = game_id
-        this.gameWord = game_word
-        this.finishedDate = finished_date
+class GameStatusResponse {
+    constructor({ id, game_word, guesses_left, status, difficulty, creation_date, guesses, result, finished_date }) {
+        this.gameId = id;
+        this.gameWord = game_word;
+        this.guessesLeft = guesses_left;
+        this.status = status;
+        this.difficulty = difficulty;
+        this.creationDate = creation_date;
+        this.guesses = guesses.map(guessData => new Guess(guessData));;
+        this.result = result;
+        this.finishedDate = finished_date;
     }
 }
+
 
 export {
     CreateGameResponse,
     TakeAGuessRequest,
     TakeAGuessResponse,
-    OngoingGameResponse,
-    LastGameResponse,
+    GameStatusResponse,
 }
