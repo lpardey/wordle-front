@@ -59,7 +59,7 @@ export default function Game() {
 
     // Snackbar 
     const [snackPack, setSnackPack] = useState([]);
-    const [openSnackBar, setOpenSnackbar] = useState(false)
+    const [openSnackBar, setOpenSnackbar] = useState(false);
     const [messageInfo, setMessageInfo] = useState(undefined);
 
     useEffect(() => {
@@ -68,14 +68,15 @@ export default function Game() {
             setMessageInfo({ ...snackPack[0] });
             setSnackPack((prev) => prev.slice(1));
             setOpenSnackbar(true);
-        } else if (snackPack.length && messageInfo && openSnackBar) {
+        } else if ((snackPack.length && messageInfo && openSnackBar) || (guesses.length === 6)) {
             // Close an active snack when a new one is added
             setOpenSnackbar(false);
         }
     }, [snackPack, messageInfo, openSnackBar]);
 
-    const handleClick = (message) => () => {
-        setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
+    const updateSnackbarMessage = (message) => {
+        const newMessage = { message, key: new Date().getTime() };
+        setSnackPack((prev) => [...prev, newMessage]);
     };
 
     const handleClose = (event, reason) => {
@@ -85,7 +86,10 @@ export default function Game() {
         setOpenSnackbar(false);
     };
 
-    const gameSnackbarMessage = guessStatus.status === "ERROR" ? guessStatus.message : `Attempts left: ${(maxAttempts - guesses.length) - 1}`
+    useEffect(() => {
+        const gameSnackbarMessage = guessStatus.status === "ERROR" ? guessStatus.message : `Attempts left: ${(maxAttempts - guesses.length)}`;
+        updateSnackbarMessage(gameSnackbarMessage); // Update the Snackbar message immediately
+    }, [guessStatus, maxAttempts]);
 
     return (
         <>
@@ -98,7 +102,7 @@ export default function Game() {
                 />
                 <GameButton
                     buttonText={"Guess"}
-                    handleClick={handleClick(gameSnackbarMessage)}
+                    handleClick={() => takeAGuess()}
                     handleMouseDown={(e) => e.preventDefault()}
                     handleDisabled={isOver}
                 />
