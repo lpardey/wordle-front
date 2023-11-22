@@ -8,6 +8,7 @@ import useToggle from "../hooks/useToggle";
 import { gameFormStyle } from "../styles/Styles";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useSnackbarLogic from "./helpers/Game/useSnackbarLogic.js";
 
 export default function Game() {
     let { gameId } = useParams()
@@ -38,7 +39,11 @@ export default function Game() {
             setGuesses(updatedGuesses);
             localStorage.setItem("guesses", JSON.stringify(updatedGuesses));
         };
-        setGuessStatus({ status: takeAGuessResponse.status, message: takeAGuessResponse.message, result: takeAGuessResponse.guessResult })
+        setGuessStatus({
+            status: takeAGuessResponse.status,
+            message: takeAGuessResponse.message,
+            result: takeAGuessResponse.guessResult,
+        })
         setGuess("");
     }
 
@@ -51,45 +56,23 @@ export default function Game() {
 
     useEffect(() => {
         if (isOver) {
-            setTimeout(() => {
-                toggleEndGamePopUp()
-            }, 2000);
+            toggleEndGamePopUp()
         }
     }, [isOver])
 
-    // Snackbar 
-    const [snackPack, setSnackPack] = useState([]);
-    const [openSnackBar, setOpenSnackbar] = useState(false);
-    const [messageInfo, setMessageInfo] = useState(undefined);
+    // useSnackbarLogic
+    const {
+        openSnackBar,
+        messageInfo,
+        useSetUpSnackbarEffect,
+        useUpdateSnackbarEffect,
+        handleCloseSnackbar,
+        handleExitedSnackbar,
+    } = useSnackbarLogic(guessStatus, maxAttempts, guesses);
 
-    useEffect(() => {
-        if (snackPack.length && !messageInfo) {
-            // Set a new snack when we don't have an active one
-            setMessageInfo({ ...snackPack[0] });
-            setSnackPack((prev) => prev.slice(1));
-            setOpenSnackbar(true);
-        } else if ((snackPack.length && messageInfo && openSnackBar) || (guesses.length === 6)) {
-            // Close an active snack when a new one is added
-            setOpenSnackbar(false);
-        }
-    }, [snackPack, messageInfo, openSnackBar]);
-
-    const updateSnackbarMessage = (message) => {
-        const newMessage = { message, key: new Date().getTime() };
-        setSnackPack((prev) => [...prev, newMessage]);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenSnackbar(false);
-    };
-
-    useEffect(() => {
-        const gameSnackbarMessage = guessStatus.status === "ERROR" ? guessStatus.message : `Attempts left: ${(maxAttempts - guesses.length)}`;
-        updateSnackbarMessage(gameSnackbarMessage); // Update the Snackbar message immediately
-    }, [guessStatus, maxAttempts]);
+    // Apply encapsulated useEffects
+    useSetUpSnackbarEffect();
+    useUpdateSnackbarEffect();
 
     return (
         <>
@@ -102,7 +85,6 @@ export default function Game() {
                 />
                 <GameButton
                     buttonText={"Guess"}
-                    handleClick={() => takeAGuess()}
                     handleMouseDown={(e) => e.preventDefault()}
                     handleDisabled={isOver}
                 />
@@ -110,8 +92,8 @@ export default function Game() {
                     key={messageInfo ? messageInfo.key : undefined}
                     open={openSnackBar}
                     autoHideDuration={3000}
-                    onClose={handleClose}
-                    handleExited={() => { setMessageInfo(undefined) }}
+                    onClose={handleCloseSnackbar}
+                    handleExited={handleExitedSnackbar}
                     message={messageInfo ? messageInfo.message : undefined}
                 />
                 <EndGamePopUp
