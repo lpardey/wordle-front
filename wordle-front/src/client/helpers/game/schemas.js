@@ -19,10 +19,6 @@ class TakeAGuessResponse {
         this.guessResult = guess_result;
         this.lettersStatus = letters_status;
     }
-
-    isOver() {
-        return this.guessResult === "GUESSED" || this.status === "ERROR";
-    }
 }
 
 class Guess {
@@ -43,6 +39,10 @@ class GameStatusResponse {
         this.guesses = guesses.map(guessData => new Guess(guessData));;
         this.result = result;
         this.finishedDate = finished_date;
+    }
+
+    isOver() {
+        return this.status === "FINISHED"
     }
 }
 
