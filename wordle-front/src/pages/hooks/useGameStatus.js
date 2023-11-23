@@ -1,22 +1,28 @@
 import { useState, useEffect } from "react";
 import WordleClient from "../../client/WordleClient";
 
-const useGameStatus = (initialState = {}) => {
+const useGameStatus = (initialState = {}, gameId) => {
     const [gameStatus, setGameStatus] = useState(initialState)
+    const client = new WordleClient()
 
-    useEffect(() => {
-        const client = new WordleClient();
-        const fetchCurrentGameStatus = async () => {
-            const response = await client.getOngoingGameStatus();
-            let finishedDate = response.gameStatus ? response.gameStatus.finished_date : null
-            setGameStatus({
-                isGameOngoing: response.ongoingGame,
-                gameFinishedDate: finishedDate
-            });
-        }
-        fetchCurrentGameStatus();
-    }, [])
+    const fetchGameStatus = async () => {
+        const response = await client.getLastGameStatus();
+        setGameStatus({
+            currentStatus: response.status,
+            gameGuesses: response.guesses,
+            gameResult: response.result,
+            gameFinishedDate: response.finishedDate,
+            gameIsOver: response.isOver(),
+        });
+    }
 
-    return [gameStatus.isGameOngoing, gameStatus.gameFinishedDate]
+    const useGameStatusEffect = () => {
+        useEffect(() => {
+            fetchGameStatus();
+        }, [gameId, gameStatus.currentStatus])
+    }
+
+    return [gameStatus, useGameStatusEffect]
 }
+
 export default useGameStatus
