@@ -9,16 +9,19 @@ import { gameFormStyle } from "../styles/Styles";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useSnackbarLogic from "./helpers/Game/useSnackbarLogic.js";
+import useGameStatus from "../pages/hooks/useGameStatus.js";
 
 export default function Game() {
     let { gameId } = useParams()
+    const client = new WordleClient();
     const storedGuesses = JSON.parse(localStorage.getItem("guesses")) || [];
     const [guesses, setGuesses] = useState(storedGuesses)
+    const [gameStatus, useGameStatusEffect] = useGameStatus(gameId)
+    const { currentStatus, gameGuesses, gameResult, gameFinishedDate, gameIsOver } = gameStatus
     const [guessStatus, setGuessStatus] = useState({ status: "", message: "", result: "" })
     const [guess, setGuess] = useState("")
     const [maxAttempts] = useState(6)
     const [endGamePopUp, toggleEndGamePopUp] = useToggle(false)
-    const client = new WordleClient();
 
     const fetchData = async () => {
         const getLastGameStatusResponse = await client.getLastGameStatus();
@@ -52,13 +55,11 @@ export default function Game() {
         takeAGuess();
     }
 
-    const isOver = (guessStatus.result === "GUESSED") || (guesses.length === maxAttempts)
-
     useEffect(() => {
-        if (isOver) {
+        if (gameIsOver) {
             toggleEndGamePopUp()
         }
-    }, [isOver])
+    }, [currentStatus])
 
     // useSnackbarLogic
     const {
@@ -68,11 +69,11 @@ export default function Game() {
         useUpdateSnackbarEffect,
         handleCloseSnackbar,
         handleExitedSnackbar,
-    } = useSnackbarLogic(guessStatus, maxAttempts, guesses);
-
+    } = useSnackbarLogic(currentStatus, guessStatus, maxAttempts, guesses);
     // Apply encapsulated useEffects
     useSetUpSnackbarEffect();
     useUpdateSnackbarEffect();
+    useGameStatusEffect();
 
     return (
         <>
@@ -81,12 +82,12 @@ export default function Game() {
                 <GameInput
                     guess={guess}
                     handleChange={handleChange}
-                    handleDisabled={isOver}
+                    handleDisabled={gameIsOver}
                 />
                 <GameButton
                     buttonText={"Guess"}
                     handleMouseDown={(e) => e.preventDefault()}
-                    handleDisabled={isOver}
+                    handleDisabled={gameIsOver}
                 />
                 <GameSnackbar
                     key={messageInfo ? messageInfo.key : undefined}
@@ -98,8 +99,8 @@ export default function Game() {
                 />
                 <EndGamePopUp
                     open={endGamePopUp}
-                    handleClose={!isOver ? toggleEndGamePopUp : null}
-                    guessStatusResult={guessStatus.result}
+                    handleClose={!gameIsOver ? toggleEndGamePopUp : null}
+                    gameResult={gameResult}
                     winnerTitle={"IT'S A MATCH!"}
                     winnerMessage={"Congratulations, you guessed the word."}
                     gameOverTitle={"GAME OVER!"}
