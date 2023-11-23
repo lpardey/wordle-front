@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import PopUpContent from "../PopUp/PopUpContent";
 import { boxPopUpSX } from "../../styles/Styles";
 
-export default function EndGamePopUp({ open, handleClose, guessStatusResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage }) {
-    const [title, message] = getContent(guessStatusResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage)
+export default function EndGamePopUp({ open, handleClose, gameResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage }) {
+    const [title, message] = getContent(gameResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage)
     return (
         <Modal
             open={open}
@@ -19,10 +19,10 @@ export default function EndGamePopUp({ open, handleClose, guessStatusResult, win
     )
 }
 
-function getContent(guessStatusResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage) {
+function getContent(gameResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage) {
     let title;
     let message;
-    if (guessStatusResult === "GUESSED") {
+    if (gameResult === "VICTORY") {
         title = winnerTitle
         message = winnerMessage
     } else {
