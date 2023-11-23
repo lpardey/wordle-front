@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useSnackbarLogic = (guessStatus, maxAttempts, guesses) => {
+const useSnackbarLogic = (currentStatus, guessStatus, maxAttempts, guesses) => {
     const [snackPack, setSnackPack] = useState([]);
     const [openSnackBar, setOpenSnackbar] = useState(false);
     const [messageInfo, setMessageInfo] = useState(undefined);
@@ -12,11 +12,18 @@ const useSnackbarLogic = (guessStatus, maxAttempts, guesses) => {
                 setMessageInfo({ ...snackPack[0] });
                 setSnackPack((prev) => prev.slice(1));
                 setOpenSnackbar(true);
-            } else if ((snackPack.length && messageInfo && openSnackBar) || (guesses.length === 6) || (guesses.length === 0)) {
+            } else if ((snackPack.length && messageInfo && openSnackBar) || (currentStatus === "FINISHED")) {
                 // Close an active snack when a new one is added
                 setOpenSnackbar(false);
             }
-        }, [snackPack, messageInfo, openSnackBar, setSnackPack]);
+        });
+    }
+
+    const useUpdateSnackbarEffect = () => {
+        useEffect(() => {
+            const snackbarMessage = getMessage(currentStatus, guessStatus, maxAttempts, guesses)
+            updateSnackbarMessage(snackbarMessage); // Update the Snackbar message immediately
+        }, [currentStatus, guessStatus, guesses]);
     }
 
     const updateSnackbarMessage = (message) => {
@@ -24,13 +31,15 @@ const useSnackbarLogic = (guessStatus, maxAttempts, guesses) => {
         setSnackPack((prev) => [...prev, newMessage]);
     };
 
-    const useUpdateSnackbarEffect = () => {
-        useEffect(() => {
-            const gameSnackbarMessage = guessStatus.status === "ERROR"
-                ? guessStatus.message
-                : `Attempts left: ${(maxAttempts - guesses.length)}`;
-            updateSnackbarMessage(gameSnackbarMessage); // Update the Snackbar message immediately
-        }, [guessStatus, maxAttempts, guesses]);
+    const getMessage = (currentStatus, guessStatus, maxAttempts, guesses) => {
+        const { status, message } = guessStatus;
+        const attempts = maxAttempts - guesses.length;
+
+        if (currentStatus === "WAITING_FOR_GUESS") {
+            return status === "ERROR" ? message : `Attempts left: ${attempts}`;
+        }
+
+        return null;
     }
 
     const handleCloseSnackbar = (event, reason) => {
