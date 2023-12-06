@@ -53,14 +53,14 @@ const useSnackbarLogic = (currentStatus, guessStatus, maxAttempts, guesses) => {
         setMessageInfo(undefined)
     }
 
-    return {
+    return [
         openSnackBar,
         messageInfo,
         useSetUpSnackbarEffect,
         useUpdateSnackbarEffect,
         handleCloseSnackbar,
         handleExitedSnackbar,
-    }
+    ]
 }
 
 export default useSnackbarLogic
