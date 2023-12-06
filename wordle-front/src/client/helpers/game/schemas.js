@@ -29,11 +29,12 @@ class Guess {
 }
 
 class GameStatusResponse {
-    constructor({ id, game_word, guesses_left, status, difficulty, creation_date, guesses, result, finished_date }) {
+    constructor({ id, game_word, guesses_left, status, max_attempts, difficulty, creation_date, guesses, result, finished_date }) {
         this.gameId = id;
         this.gameWord = game_word;
         this.guessesLeft = guesses_left;
         this.status = status;
+        this.maxAttempts = max_attempts
         this.difficulty = difficulty;
         this.creationDate = creation_date;
         this.guesses = guesses.map(guessData => new Guess(guessData));;
