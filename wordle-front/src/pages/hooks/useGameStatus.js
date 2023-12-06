@@ -9,6 +9,7 @@ const useGameStatus = (initialState = {}, gameId) => {
         const response = await client.getLastGameStatus();
         setGameStatus({
             currentStatus: response.status,
+            gameMaxAttempts: response.maxAttempts,
             gameGuesses: response.guesses,
             gameResult: response.result,
             gameFinishedDate: response.finishedDate,
