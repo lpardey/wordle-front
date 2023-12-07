@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import WordleClient from "../../client/WordleClient";
 
-const useGameStatus = (initialState = {}, gameId) => {
+const useGameStatus = (initialState = {}) => {
     const [gameStatus, setGameStatus] = useState(initialState)
     const client = new WordleClient()
 
@@ -17,13 +17,7 @@ const useGameStatus = (initialState = {}, gameId) => {
         });
     }
 
-    const useGameStatusEffect = () => {
-        useEffect(() => {
-            fetchGameStatus();
-        }, [gameId, gameStatus.currentStatus])
-    }
-
-    return [gameStatus, useGameStatusEffect]
+    return [gameStatus, fetchGameStatus]
 }
 
 export default useGameStatus
