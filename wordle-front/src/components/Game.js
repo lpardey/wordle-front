@@ -9,13 +9,13 @@ import useSnackbarLogic from "./helpers/Game/useSnackbarLogic.js";
 import useGameStatus from "../pages/hooks/useGameStatus.js";
 import useGameLogic from "./helpers/Game/useGameLogic.js";
 import useEndGamePopUpLogic from "./helpers/Game/useEndGamePopUp.js";
+import { useEffect } from "react";
 
 export default function Game() {
     let { gameId } = useParams()
-    const storedGuesses = JSON.parse(localStorage.getItem("guesses")) || [];
 
     // Game Status
-    const [gameStatus, useGameStatusEffect] = useGameStatus(gameId)
+    const [gameStatus, fetchGameStatus] = useGameStatus()
     const { currentStatus,
         gameMaxAttempts,
         gameGuesses,
@@ -31,7 +31,7 @@ export default function Game() {
         setGuess,
         takeAGuess,
         useGameLogicEffect
-    ] = useGameLogic(gameId, storedGuesses, gameMaxAttempts)
+    ] = useGameLogic(gameId, gameMaxAttempts)
 
     // Snackbar Logic
     const [
@@ -58,8 +58,12 @@ export default function Game() {
         takeAGuess();
     }
 
+    // everytime take a guess runs we return an updated game status
+    useEffect(() => {
+        fetchGameStatus();
+    }, [guesses])
+
     // Apply encapsulated useEffects
-    useGameStatusEffect();
     useGameLogicEffect();
     useSetUpSnackbarEffect();
     useUpdateSnackbarEffect();
