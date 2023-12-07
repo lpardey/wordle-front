@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import WordleClient from "../../../client/WordleClient";
 
-const useGameLogic = (gameId, initialGuesses, maxAttemps) => {
+const useGameLogic = (gameId, maxAttemps) => {
     const client = new WordleClient();
     const [guess, setGuess] = useState("")
-    const [guesses, setGuesses] = useState(initialGuesses || []);
+    const storedGuesses = JSON.parse(localStorage.getItem("guesses")) || [];
+    const [guesses, setGuesses] = useState(storedGuesses);
     const [guessStatus, setGuessStatus] = useState({ status: "", message: "", result: "" });
 
     const fetchData = async () => {
