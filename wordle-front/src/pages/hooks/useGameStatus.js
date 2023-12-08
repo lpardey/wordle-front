@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import WordleClient from "../../client/WordleClient";
 
 const useGameStatus = (initialState = {}) => {
@@ -9,6 +9,7 @@ const useGameStatus = (initialState = {}) => {
         const response = await client.getLastGameStatus();
         setGameStatus({
             currentStatus: response.status,
+            gameWord: response.gameWord,
             gameMaxAttempts: response.maxAttempts,
             gameGuesses: response.guesses,
             gameResult: response.result,
