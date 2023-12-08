@@ -58,7 +58,7 @@ export default function Game() {
         takeAGuess();
     }
 
-    // everytime take a guess runs we return an updated game status
+    // Everytime take a guess runs we return an updated game status
     useEffect(() => {
         fetchGameStatus();
     }, [guesses])
