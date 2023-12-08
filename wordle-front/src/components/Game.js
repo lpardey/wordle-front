@@ -17,6 +17,7 @@ export default function Game() {
     // Game Status
     const [gameStatus, fetchGameStatus] = useGameStatus()
     const { currentStatus,
+        gameWord,
         gameMaxAttempts,
         gameGuesses,
         gameResult,
@@ -96,9 +97,9 @@ export default function Game() {
                     handleClose={!gameIsOver ? toggleEndGamePopUp : null}
                     gameResult={gameResult}
                     winnerTitle={"IT'S A MATCH!"}
-                    winnerMessage={"Congratulations, you guessed the word."}
+                    winnerMessage={`'${gameWord}' is the word for this game.`}
                     gameOverTitle={"GAME OVER!"}
-                    gameOverMessage={"Game word: 'xxx'."}
+                    gameOverMessage={`'${gameWord}' is the word for this game.`}
                 />
             </form>
         </>
