@@ -2,8 +2,9 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import PopUpContent from "../PopUp/PopUpContent";
 import { boxPopUpSX } from "../../styles/Styles";
+import Timer from "../Timer";
 
-export default function EndGamePopUp({ open, handleClose, gameResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage }) {
+export default function EndGamePopUp({ open, handleClose, gameResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage,  gameFinishedDate, shouldTimerStart }) {
     const [title, message] = getContent(gameResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage)
     return (
         <Modal
@@ -14,6 +15,7 @@ export default function EndGamePopUp({ open, handleClose, gameResult, winnerTitl
         >
             <Box sx={boxPopUpSX}>
                 <PopUpContent title={title} message={message} />
+                <Timer gameFinishedDate={gameFinishedDate} />
             </Box>
         </Modal>
     )
