@@ -1,63 +1,69 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-function Timer({ initialTimer = "24:00:00" }) {
-    const intervalRef = useRef(null);
+function Timer({ startTimerValue = 24 }) {
+    const initTimeLeft = () => {
+        const initialTimeInSeconds = startTimerValue * 60 * 60; // 24 hours in seconds
+        const storedTime = parseInt(localStorage.getItem('countdownTime'));
+        const lastUpdateTime = parseInt(localStorage.getItem('lastUpdateTime'));
+        const currentTime = Math.floor(Date.now() / 1000);
 
-    const calculateTimeRemaining = (expiryTime) => {
-        const totalMilliseconds = Date.parse(expiryTime) - Date.now();
-        const seconds = Math.floor((totalMilliseconds / 1000) % 60);
-        const minutes = Math.floor((totalMilliseconds / 1000 / 60) % 60);
-        const hours = Math.floor((totalMilliseconds / 1000 / 60 / 60) % 24);
-        return {
-            totalMilliseconds,
-            hours,
-            minutes,
-            seconds,
-        };
+        if (storedTime && lastUpdateTime) {
+            const elapsedSeconds = currentTime - lastUpdateTime;
+            const remainingTime = storedTime - elapsedSeconds;
+            return remainingTime > 0 ? remainingTime : 0;
+        }
+
+        return initialTimeInSeconds;
     };
-
-    const formatTime = (value) => String(value).padStart(2, "0");
-
-    const updateTimer = (expiryTime) => {
-        const { hours, minutes, seconds } = calculateTimeRemaining(expiryTime);
-        const formattedTimer = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
-        setTimer(formattedTimer);
-        localStorage.setItem("timerValue", formattedTimer); // Save to localStorage
-    };
-
-    const [timer, setTimer] = useState(() => {
-        const storedTimerValue = localStorage.getItem("timerValue");
-        return storedTimerValue || initialTimer;
-    });
-
-    const startTimer = (expiryTime) => {
-        clearInterval(intervalRef.current);
-        updateTimer(expiryTime);
-        intervalRef.current = setInterval(() => updateTimer(expiryTime), 1000);
-    };
-
-    const clearTimer = (expiryTime) => {
-        setTimer("24:00:00");
-        localStorage.setItem("timerValue", "24:00:00"); // Save to localStorage
-        clearInterval(intervalRef.current);
-        startTimer(expiryTime);
-    };
-
-    const getDeadline = () => {
-        const deadline = new Date();
-        deadline.setHours(deadline.getHours() + 24);
-        return deadline;
-    };
+    const [timeLeft, setTimeLeft] = useState(initTimeLeft);
 
     useEffect(() => {
-        const deadline = getDeadline();
-        clearTimer(deadline);
+        const timerInterval = setInterval(() => {
+            setTimeLeft((prevTime) => {
+                const newTime = prevTime - 1;
+                localStorage.setItem('countdownTime', newTime.toString());
+                localStorage.setItem('lastUpdateTime', Math.floor(Date.now() / 1000).toString());
 
-        return () => clearInterval(intervalRef.current); // Cleanup interval on component unmount
+                // Clear interval and reset time when countdown reaches 0
+                if (newTime === 0) {
+                    clearInterval(timerInterval);
+                    localStorage.removeItem('countdownTime');
+                    localStorage.removeItem('lastUpdateTime');
+                }
+
+                return newTime;
+            });
+        }, 1000);
+
+        const handleBeforeUnload = () => {
+            localStorage.setItem('lastUpdateTime', Math.floor(Date.now() / 1000).toString());
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            clearInterval(timerInterval);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
     }, []);
 
-    return <div>{timer}</div>;
-}
 
+    const formatValue = (value) => {
+        return String(value).padStart(2, "0")
+    }
+
+    const formatTime = (seconds) => {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = seconds % 60;
+        return `${formatValue(hours)} : ${formatValue(minutes)} : ${formatValue(remainingSeconds)}`;
+    };
+
+    return (
+        <div>
+            <div>Time Left: {formatTime(timeLeft)}</div>
+        </div>
+    );
+};
 
 export default Timer;
