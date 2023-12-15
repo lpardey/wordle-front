@@ -100,6 +100,7 @@ export default function Game() {
                     winnerMessage={`'${gameWord}' is the word for this game.`}
                     gameOverTitle={"GAME OVER!"}
                     gameOverMessage={`'${gameWord}' is the word for this game.`}
+                    gameId={gameId}
                     gameFinishedDate={gameFinishedDate}
                 />
             </form>
