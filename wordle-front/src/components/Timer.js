@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-function Timer({ startTimerValue = 24 }) {
+function Timer({ startTimerValue = 24, gameId, gameFinishedDate }) {
+    const countdownTimeKey = `game_${gameId}_${gameFinishedDate}`
+    const lastUpdateTimeKey = `${countdownTimeKey}_lastUpdateTime`
     const initTimeLeft = () => {
         const initialTimeInSeconds = startTimerValue * 60 * 60; // 24 hours in seconds
-        const storedTime = parseInt(localStorage.getItem('countdownTime'));
-        const lastUpdateTime = parseInt(localStorage.getItem('lastUpdateTime'));
+        const storedTime = parseInt(localStorage.getItem(countdownTimeKey));
+        const lastUpdateTime = parseInt(localStorage.getItem(lastUpdateTimeKey));
         const currentTime = Math.floor(Date.now() / 1000);
 
         if (storedTime && lastUpdateTime) {
@@ -21,14 +23,14 @@ function Timer({ startTimerValue = 24 }) {
         const timerInterval = setInterval(() => {
             setTimeLeft((prevTime) => {
                 const newTime = prevTime - 1;
-                localStorage.setItem('countdownTime', newTime.toString());
-                localStorage.setItem('lastUpdateTime', Math.floor(Date.now() / 1000).toString());
+                localStorage.setItem(countdownTimeKey, newTime.toString());
+                localStorage.setItem(lastUpdateTimeKey, Math.floor(Date.now() / 1000).toString());
 
                 // Clear interval and reset time when countdown reaches 0
                 if (newTime === 0) {
                     clearInterval(timerInterval);
-                    localStorage.removeItem('countdownTime');
-                    localStorage.removeItem('lastUpdateTime');
+                    localStorage.removeItem(countdownTimeKey);
+                    localStorage.removeItem(lastUpdateTimeKey);
                 }
 
                 return newTime;
@@ -36,7 +38,7 @@ function Timer({ startTimerValue = 24 }) {
         }, 1000);
 
         const handleBeforeUnload = () => {
-            localStorage.setItem('lastUpdateTime', Math.floor(Date.now() / 1000).toString());
+            localStorage.setItem(lastUpdateTimeKey, Math.floor(Date.now() / 1000).toString());
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
@@ -45,7 +47,7 @@ function Timer({ startTimerValue = 24 }) {
             clearInterval(timerInterval);
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    }, []);
+    }, [countdownTimeKey, lastUpdateTimeKey]);
 
 
     const formatValue = (value) => {
