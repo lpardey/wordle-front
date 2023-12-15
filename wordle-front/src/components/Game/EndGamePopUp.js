@@ -4,7 +4,7 @@ import PopUpContent from "../PopUp/PopUpContent";
 import { boxPopUpSX } from "../../styles/Styles";
 import Timer from "../Timer";
 
-export default function EndGamePopUp({ open, handleClose, gameResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage,  gameFinishedDate, shouldTimerStart }) {
+export default function EndGamePopUp({ open, handleClose, gameResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage, gameFinishedDate, gameId }) {
     const [title, message] = getContent(gameResult, winnerTitle, winnerMessage, gameOverTitle, gameOverMessage)
     return (
         <Modal
@@ -15,7 +15,7 @@ export default function EndGamePopUp({ open, handleClose, gameResult, winnerTitl
         >
             <Box sx={boxPopUpSX}>
                 <PopUpContent title={title} message={message} />
-                <Timer gameFinishedDate={gameFinishedDate} />
+                <Timer gameId={gameId} gameFinishedDate={gameFinishedDate} />
             </Box>
         </Modal>
     )
