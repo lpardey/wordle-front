@@ -47,8 +47,10 @@ export default function Game() {
     // EndGamePopUp Logic
     const [endGamePopUp,
         toggleEndGamePopUp,
+        endGameMessage,
         useEndGamePopUpLogicEffect
-    ] = useEndGamePopUpLogic(currentStatus, gameIsOver)
+    ] = useEndGamePopUpLogic(currentStatus, gameIsOver, gameWord)
+    
 
     const handleChange = (e) => {
         setGuess(e.target.value)
@@ -97,9 +99,9 @@ export default function Game() {
                     handleClose={!gameIsOver ? toggleEndGamePopUp : null}
                     gameResult={gameResult}
                     winnerTitle={"IT'S A MATCH!"}
-                    winnerMessage={`'${gameWord}' is the word for this game.`}
+                    winnerMessage={endGameMessage}
                     gameOverTitle={"GAME OVER!"}
-                    gameOverMessage={`'${gameWord}' is the word for this game.`}
+                    gameOverMessage={endGameMessage}
                     gameId={gameId}
                     gameFinishedDate={gameFinishedDate}
                 />
