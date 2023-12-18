@@ -63,7 +63,7 @@ function Timer({ startTimerValue = 24, gameId, gameFinishedDate }) {
 
     return (
         <div>
-            <div>Time Left: {formatTime(timeLeft)}</div>
+            <div>Next game starts in: {formatTime(timeLeft)}</div>
         </div>
     );
 };
