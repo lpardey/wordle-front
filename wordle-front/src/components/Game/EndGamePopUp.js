@@ -13,8 +13,9 @@ export default function EndGamePopUp({ open, handleClose, gameResult, winnerTitl
             aria-labelledby="child-modal-title"
             aria-describedby="child-modal-description"
         >
-            <Box sx={boxPopUpSX}>
+            <Box sx={boxPopUpSX} textAlign={"center"}>
                 <PopUpContent title={title} message={message} />
+                <br />
                 <Timer gameId={gameId} gameFinishedDate={gameFinishedDate} />
             </Box>
         </Modal>
