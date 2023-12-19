@@ -1,4 +1,4 @@
-const redirectToGame = async (client, userId, navigate) => {
+const redirectToGame = async (client, userId, navigate, timeout) => {
     const getLastGameResponse = await client.getLastGameStatus()
     const playAgain = localStorage.getItem("playAgain")
     let gameId
@@ -13,7 +13,7 @@ const redirectToGame = async (client, userId, navigate) => {
 
     setTimeout(() => {
         navigate(`/${userId}/${gameId}`)
-    }, 4000);
+    }, timeout);
 }
 
 export default redirectToGame

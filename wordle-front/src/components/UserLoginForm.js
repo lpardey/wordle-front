@@ -29,7 +29,7 @@ export default function UserLoginForm() {
         } else {
             toggleIsSuccess();
             toggleOpen();
-            redirectToGame(client, loginUserResponse.userId, navigate)
+            redirectToGame(client, loginUserResponse.userId, navigate, 4000)
         }
         resetInputs();
     };
