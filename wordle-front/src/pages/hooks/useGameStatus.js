@@ -1,9 +1,7 @@
 import { useState } from "react";
-import WordleClient from "../../client/WordleClient";
 
-const useGameStatus = (initialState = {}) => {
+const useGameStatus = (client, initialState = {}) => {
     const [gameStatus, setGameStatus] = useState(initialState)
-    const client = new WordleClient()
 
     const fetchGameStatus = async () => {
         const response = await client.getLastGameStatus();

@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import WordleClient from "../../../client/WordleClient";
 
-const useGameLogic = (gameId, maxAttemps) => {
-    const client = new WordleClient();
+const useGameLogic = (client, gameId, maxAttemps) => {
     const [guess, setGuess] = useState("")
     const storedGuesses = JSON.parse(localStorage.getItem("guesses")) || [];
     const [guesses, setGuesses] = useState(storedGuesses);
