@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-function Timer({ startTimerValue = 24, gameId, gameFinishedDate }) {
+function Timer({ gameId, gameFinishedDate, startTimerValue = 24 }) {
     const countdownTimeKey = `game_${gameId}_${gameFinishedDate}`
     const lastUpdateTimeKey = `${countdownTimeKey}_lastUpdateTime`
+    
     const initTimeLeft = () => {
         const initialTimeInSeconds = startTimerValue * 60 * 60; // 24 hours in seconds
         const storedTime = parseInt(localStorage.getItem(countdownTimeKey));
@@ -26,11 +27,12 @@ function Timer({ startTimerValue = 24, gameId, gameFinishedDate }) {
                 localStorage.setItem(countdownTimeKey, newTime.toString());
                 localStorage.setItem(lastUpdateTimeKey, Math.floor(Date.now() / 1000).toString());
 
-                // Clear interval and reset time when countdown reaches 0
+                // Clear interval, reset time when countdown reaches 0 and set playAgain value in localStorage
                 if (newTime === 0) {
                     clearInterval(timerInterval);
                     localStorage.removeItem(countdownTimeKey);
                     localStorage.removeItem(lastUpdateTimeKey);
+                    localStorage.setItem("playAgain", true);
                 }
 
                 return newTime;
