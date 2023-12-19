@@ -3,19 +3,13 @@ import GameInput from "./Game/GameInput";
 import GameButton from "./Game/GameButton";
 import GameSnackbar from "./Game/GameSnackbar";
 import EndGamePopUp from "./Game/EndGamePopUp";
-import { gameFormStyle } from "../styles/Styles";
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 import useSnackbarLogic from "./helpers/Game/useSnackbarLogic.js";
-import useGameStatus from "../pages/hooks/useGameStatus.js";
 import useGameLogic from "./helpers/Game/useGameLogic.js";
 import useEndGamePopUpLogic from "./helpers/Game/useEndGamePopUp.js";
-import { useEffect } from "react";
+import { gameFormStyle } from "../styles/Styles";
 
-export default function Game() {
-    let { gameId } = useParams()
-
-    // Game Status
-    const [gameStatus, fetchGameStatus] = useGameStatus()
+export default function Game({ client, gameId, gameStatus, fetchGameStatus }) {
     const { currentStatus,
         gameWord,
         gameMaxAttempts,
@@ -32,7 +26,7 @@ export default function Game() {
         setGuess,
         takeAGuess,
         useGameLogicEffect
-    ] = useGameLogic(gameId, gameMaxAttempts)
+    ] = useGameLogic(client, gameId, gameMaxAttempts)
 
     // Snackbar Logic
     const [
@@ -50,7 +44,7 @@ export default function Game() {
         endGameMessage,
         useEndGamePopUpLogicEffect
     ] = useEndGamePopUpLogic(currentStatus, gameIsOver, gameWord)
-    
+
 
     const handleChange = (e) => {
         setGuess(e.target.value)
